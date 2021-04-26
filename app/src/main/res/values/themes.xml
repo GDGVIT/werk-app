@@ -11,5 +11,11 @@
         <item name="colorSurface">@color/gray</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="android:textColor">@color/white</item>
+
+        <!--Shapes-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Werk.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Werk.MediumComponent
+        </item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Werk.LargeComponent</item>
     </style>
 </resources>

@@ -14,9 +14,11 @@
         app:layout_constraintGuide_percent="0.35" />
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="128dp"
         android:src="@drawable/logo"
+        android:transitionName="logo_big"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/welcome_text"

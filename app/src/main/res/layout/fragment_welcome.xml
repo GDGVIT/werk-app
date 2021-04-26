@@ -51,14 +51,14 @@
             android:paddingVertical="48dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/googleSignUpButton"
+                android:id="@+id/google_sign_up_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="@string/sign_up_google" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/emailSignUpButton"
+                android:id="@+id/email_sign_up_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/dark_gray"
@@ -67,11 +67,13 @@
                 android:text="@string/sign_up_email" />
 
             <TextView
+                android:id="@+id/account_exists_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="48dp"
                 android:textStyle="bold"
+                android:padding="4dp"
                 android:text="@string/account_exists"
                 android:textAppearance="?attr/textAppearanceBody2"/>
 

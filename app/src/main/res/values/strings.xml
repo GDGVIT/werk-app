@@ -7,4 +7,8 @@
     <string name="account_exists"><u>Already have an account? Log In!</u></string>
     <string name="welcome">Welcome to Werk!</string>
     <string name="logo">Logo</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_desc">You are almost there!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>

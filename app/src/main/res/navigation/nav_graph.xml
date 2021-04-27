@@ -29,10 +29,31 @@
         android:id="@+id/signInFragment"
         android:name="com.dscvit.werk.ui.auth.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_sessionsOverviewFragment"
+            app:destination="@id/sessionsOverviewFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.dscvit.werk.ui.auth.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_sessionsOverviewFragment"
+            app:destination="@id/sessionsOverviewFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/sessionsOverviewFragment"
+        android:name="com.dscvit.werk.ui.overview.SessionsOverviewFragment"
+        android:label="fragment_sessions_overview"
+        tools:layout="@layout/fragment_sessions_overview" />
 </navigation>

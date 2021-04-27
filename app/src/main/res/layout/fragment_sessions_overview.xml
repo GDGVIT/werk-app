@@ -48,17 +48,17 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UPCOMING" />
+                android:text="@string/upcoming" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ONGOING" />
+                android:text="@string/ongoing" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="COMPLETED" />
+                android:text="@string/completed" />
 
         </com.google.android.material.tabs.TabLayout>
 

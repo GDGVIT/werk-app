@@ -14,4 +14,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="name">Name</string>
     <string name="werk">Werk</string>
+    <string name="upcoming">UPCOMING</string>
+    <string name="ongoing">ONGOING</string>
+    <string name="completed">COMPLETED</string>
 </resources>

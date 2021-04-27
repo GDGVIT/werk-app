@@ -17,4 +17,6 @@
     <string name="upcoming">UPCOMING</string>
     <string name="ongoing">ONGOING</string>
     <string name="completed">COMPLETED</string>
+    <string name="werk_sessions">Werk Sessions</string>
+    <string name="start_session">Start Session</string>
 </resources>

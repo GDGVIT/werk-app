@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.overview.OngoingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ONGOING" />
+        android:paddingVertical="24dp"
+        android:clipToPadding="false"
+        tools:itemCount="3"
+        tools:listitem="@layout/session_item" />
 
 </FrameLayout>

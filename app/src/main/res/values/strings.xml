@@ -19,4 +19,5 @@
     <string name="completed">COMPLETED</string>
     <string name="werk_sessions">Werk Sessions</string>
     <string name="start_session">Start Session</string>
+    <string name="session_name">Session Name</string>
 </resources>

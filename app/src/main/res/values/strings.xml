@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Werk</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_up_google">Sign up with google</string>
     <string name="sign_up_email">Sign up with email</string>
@@ -22,4 +21,9 @@
     <string name="session_name">Session Name</string>
     <string name="create_a_session">Create a Session</string>
     <string name="join_a_session">Join a Session</string>
+    <string name="qr_code">QR Code</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="or_line">Or line</string>
+    <string name="code">Enter Code</string>
+    <string name="join">Join</string>
 </resources>

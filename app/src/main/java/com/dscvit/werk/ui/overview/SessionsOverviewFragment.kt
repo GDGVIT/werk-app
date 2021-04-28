@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
@@ -102,6 +103,13 @@ class SessionsOverviewFragment : Fragment() {
             setVisibility(clicked)
             setAnimation(clicked)
             clicked = !clicked
+        }
+
+        binding.joinSessionFab.setOnClickListener {
+            clicked = !clicked
+            val action =
+                SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToJoinSessionFragment()
+            findNavController().navigate(action)
         }
     }
 

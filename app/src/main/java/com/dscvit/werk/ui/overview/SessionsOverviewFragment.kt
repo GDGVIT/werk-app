@@ -45,6 +45,20 @@ class SessionsOverviewFragment : Fragment() {
         )
     }
 
+    private val closeOverlay: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.close_overlay_anim
+        )
+    }
+
+    private val openOverlay: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.open_overlay_anim
+        )
+    }
+
     private var clicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,23 +107,27 @@ class SessionsOverviewFragment : Fragment() {
 
     private fun setVisibility(clicked: Boolean) {
         if (!clicked) {
-            binding.createSessionFab.visibility = View.VISIBLE
-            binding.joinSessionFab.visibility = View.VISIBLE
+            binding.createSession.visibility = View.VISIBLE
+            binding.joinSession.visibility = View.VISIBLE
+            binding.overlay.visibility = View.VISIBLE
         } else {
-            binding.createSessionFab.visibility = View.INVISIBLE
-            binding.joinSessionFab.visibility = View.INVISIBLE
+            binding.createSession.visibility = View.INVISIBLE
+            binding.joinSession.visibility = View.INVISIBLE
+            binding.overlay.visibility = View.INVISIBLE
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            binding.createSessionFab.startAnimation(fromBottom)
-            binding.joinSessionFab.startAnimation(fromBottom)
+            binding.createSession.startAnimation(fromBottom)
+            binding.joinSession.startAnimation(fromBottom)
             binding.sessionFab.startAnimation(rotateOpen)
+            binding.overlay.startAnimation(openOverlay)
         } else {
-            binding.createSessionFab.startAnimation(toBottom)
-            binding.joinSessionFab.startAnimation(toBottom)
+            binding.createSession.startAnimation(toBottom)
+            binding.joinSession.startAnimation(toBottom)
             binding.sessionFab.startAnimation(rotateClose)
+            binding.overlay.startAnimation(closeOverlay)
         }
     }
 }

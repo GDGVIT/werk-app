@@ -89,37 +89,83 @@
         app:backgroundTint="@color/red"
         android:contentDescription="@string/start_session"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/create_session_fab"
+    <LinearLayout
+        android:id="@+id/join_session"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/session_fab"
-        app:layout_constraintStart_toStartOf="@id/session_fab"
-        app:layout_constraintBottom_toTopOf="@id/session_fab"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="12dp"
+        android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_add"
-        app:tint="@color/black"
-        app:backgroundTint="@color/white"
-        android:contentDescription="@string/start_session"/>
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/create_session"
+        android:orientation="horizontal">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/join_session_fab"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/join_a_session"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_gravity="center"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/join_session_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:src="@drawable/ic_add"
+            app:tint="@color/black"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/start_session"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/create_session"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/create_session_fab"
-        app:layout_constraintStart_toStartOf="@id/create_session_fab"
-        app:layout_constraintBottom_toTopOf="@id/create_session_fab"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="12dp"
+        android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_add"
-        app:tint="@color/black"
-        app:backgroundTint="@color/white"
-        android:contentDescription="@string/start_session"/>
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/session_fab"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_a_session"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_gravity="center"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_session_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_add"
+            app:tint="@color/black"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/start_session"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/dark_gray"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

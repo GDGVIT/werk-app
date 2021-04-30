@@ -24,6 +24,7 @@ class JoinSessionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.appBar.appBarTitle.text = requireContext().getString(R.string.join_a_session)
         binding.appBar.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()

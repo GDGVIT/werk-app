@@ -63,10 +63,22 @@
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_sessionsOverviewFragment_to_createSessionFragment"
+            app:destination="@id/createSessionFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
     <fragment
         android:id="@+id/joinSessionFragment"
         android:name="com.dscvit.werk.ui.overview.JoinSessionFragment"
         android:label="fragment_join_session"
         tools:layout="@layout/fragment_join_session" />
+    <fragment
+        android:id="@+id/createSessionFragment"
+        android:name="com.dscvit.werk.ui.overview.CreateSessionFragment"
+        android:label="CreateSessionFragment"
+        tools:layout="@layout/fragment_create_session"/>
 </navigation>

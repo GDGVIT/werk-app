@@ -111,6 +111,13 @@ class SessionsOverviewFragment : Fragment() {
                 SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToJoinSessionFragment()
             findNavController().navigate(action)
         }
+
+        binding.createSessionFab.setOnClickListener {
+            clicked = !clicked
+            val action =
+                SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToCreateSessionFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun setVisibility(clicked: Boolean) {

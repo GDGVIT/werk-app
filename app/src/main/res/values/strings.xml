@@ -26,4 +26,8 @@
     <string name="or_line">Or line</string>
     <string name="code">Enter Code</string>
     <string name="join">Join</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="description">Description</string>
+    <string name="enter_a_description">Enter a Description…</string>
 </resources>

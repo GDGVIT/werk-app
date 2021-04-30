@@ -96,6 +96,14 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/next_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:padding="16dp"
+                android:text="@string/next" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />

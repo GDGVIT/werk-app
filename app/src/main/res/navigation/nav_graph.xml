@@ -80,5 +80,18 @@
         android:id="@+id/createSessionFragment"
         android:name="com.dscvit.werk.ui.overview.CreateSessionFragment"
         android:label="CreateSessionFragment"
-        tools:layout="@layout/fragment_create_session"/>
+        tools:layout="@layout/fragment_create_session">
+        <action
+            android:id="@+id/action_createSessionFragment_to_inviteFragment"
+            app:destination="@id/inviteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/inviteFragment"
+        android:name="com.dscvit.werk.ui.overview.InviteFragment"
+        android:label="fragment_invite"
+        tools:layout="@layout/fragment_invite" />
 </navigation>

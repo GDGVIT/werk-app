@@ -63,5 +63,11 @@ class CreateSessionFragment : Fragment() {
                 binding.timeInput.editText!!.setText("${timePicker.hour} : ${timePicker.minute}")
             }
         }
+
+        binding.nextButton.setOnClickListener {
+            val action =
+                CreateSessionFragmentDirections.actionCreateSessionFragmentToInviteFragment()
+            findNavController().navigate(action)
+        }
     }
 }

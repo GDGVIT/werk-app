@@ -37,4 +37,8 @@
     <string name="team_code">Team Code</string>
     <string name="allow_team_members_to_create_tasks">Allow team members to create tasks?</string>
     <string name="all_done_lets_go">All done, Lets Go!</string>
+    <string name="session">Session</string>
+    <string name="chat">Chat</string>
+    <string name="walkie_talkie">Walkie Talkie</string>
+    <string name="leaderboard">Leaderboard</string>
 </resources>

@@ -28,5 +28,10 @@ class InviteFragment : Fragment() {
         binding.appBar.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.nextButton.setOnClickListener {
+            val action = InviteFragmentDirections.actionInviteFragmentToSessionActivity()
+            findNavController().navigate(action)
+        }
     }
 }

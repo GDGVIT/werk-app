@@ -75,7 +75,11 @@
         android:id="@+id/joinSessionFragment"
         android:name="com.dscvit.werk.ui.overview.JoinSessionFragment"
         android:label="fragment_join_session"
-        tools:layout="@layout/fragment_join_session" />
+        tools:layout="@layout/fragment_join_session" >
+        <action
+            android:id="@+id/action_joinSessionFragment_to_sessionActivity"
+            app:destination="@id/sessionActivity" />
+    </fragment>
     <fragment
         android:id="@+id/createSessionFragment"
         android:name="com.dscvit.werk.ui.overview.CreateSessionFragment"
@@ -93,5 +97,14 @@
         android:id="@+id/inviteFragment"
         android:name="com.dscvit.werk.ui.overview.InviteFragment"
         android:label="fragment_invite"
-        tools:layout="@layout/fragment_invite" />
+        tools:layout="@layout/fragment_invite" >
+        <action
+            android:id="@+id/action_inviteFragment_to_sessionActivity"
+            app:destination="@id/sessionActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/sessionActivity"
+        android:name="com.dscvit.werk.ui.SessionActivity"
+        android:label="activity_session"
+        tools:layout="@layout/activity_session" />
 </navigation>

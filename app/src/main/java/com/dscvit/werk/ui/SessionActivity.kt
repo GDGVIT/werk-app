@@ -1,10 +1,8 @@
 package com.dscvit.werk.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.ActivitySessionBinding
@@ -29,18 +27,22 @@ class SessionActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             val appBarTitle: String = when (it.itemId) {
                 R.id.sessionFragment -> {
+                    navController.popBackStack()
                     navController.navigate(R.id.sessionFragment)
                     "Session"
                 }
                 R.id.chatFragment -> {
+                    navController.popBackStack()
                     navController.navigate(R.id.chatFragment)
                     "Chat"
                 }
                 R.id.walkieTalkieFragment -> {
+                    navController.popBackStack()
                     navController.navigate(R.id.walkieTalkieFragment)
                     "Walkie Talkie"
                 }
                 R.id.leaderboardFragment -> {
+                    navController.popBackStack()
                     navController.navigate(R.id.leaderboardFragment)
                     "Leaderboard"
                 }

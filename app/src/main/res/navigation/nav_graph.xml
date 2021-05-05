@@ -78,7 +78,8 @@
         tools:layout="@layout/fragment_join_session">
         <action
             android:id="@+id/action_joinSessionFragment_to_sessionActivity"
-            app:destination="@id/sessionActivity" />
+            app:destination="@id/sessionActivity"
+            app:popUpTo="@id/sessionsOverviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/createSessionFragment"
@@ -100,7 +101,8 @@
         tools:layout="@layout/fragment_invite">
         <action
             android:id="@+id/action_inviteFragment_to_sessionActivity"
-            app:destination="@id/sessionActivity" />
+            app:destination="@id/sessionActivity"
+            app:popUpTo="@id/sessionsOverviewFragment" />
     </fragment>
     <activity
         android:id="@+id/sessionActivity"

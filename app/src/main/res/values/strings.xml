@@ -41,4 +41,8 @@
     <string name="chat">Chat</string>
     <string name="walkie_talkie">Walkie Talkie</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="total_time_elapsed">Total time elapsed</string>
+    <string name="_04_20">04 : 20</string>
+    <string name="let_s_start">Let\'s Start</string>
+    <string name="i_m_done">I\'m Done!</string>
 </resources>

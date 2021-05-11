@@ -46,4 +46,6 @@
     <string name="let_s_start">Let\'s Start</string>
     <string name="i_m_done">I\'m Done!</string>
     <string name="task_title">Task Title</string>
+    <string name="back_button">Back Button</string>
+    <string name="hrs">HRS</string>
 </resources>

@@ -9,7 +9,15 @@
         android:id="@+id/sessionFragment"
         android:name="com.dscvit.werk.ui.session.SessionFragment"
         android:label="Session"
-        tools:layout="@layout/fragment_session" />
+        tools:layout="@layout/fragment_session">
+        <action
+            android:id="@+id/action_sessionFragment_to_taskDescriptionActivity"
+            app:destination="@id/taskDescriptionActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.dscvit.werk.ui.session.ChatFragment"
@@ -25,4 +33,9 @@
         android:name="com.dscvit.werk.ui.session.LeaderboardFragment"
         android:label="Leaderboard"
         tools:layout="@layout/fragment_leaderboard" />
+    <activity
+        android:id="@+id/taskDescriptionActivity"
+        android:name="com.dscvit.werk.ui.tasks.TaskDescriptionActivity"
+        android:label="activity_task_description"
+        tools:layout="@layout/activity_task_description" />
 </navigation>

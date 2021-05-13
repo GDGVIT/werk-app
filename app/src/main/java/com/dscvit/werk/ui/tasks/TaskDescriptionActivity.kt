@@ -1,6 +1,7 @@
 package com.dscvit.werk.ui.tasks
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -20,6 +21,16 @@ class TaskDescriptionActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
+        }
+
+        binding.descriptionCard.setOnClickListener {
+            if (binding.descBody.visibility == View.GONE) {
+                binding.descBody.visibility = View.VISIBLE
+                binding.dropdownMenu.rotation = 180f
+            } else {
+                binding.descBody.visibility = View.GONE
+                binding.dropdownMenu.rotation = 0f
+            }
         }
     }
 }

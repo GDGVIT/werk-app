@@ -1,239 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:context=".ui.tasks.TaskDescriptionActivity">
+    android:fillViewport="true">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:animateLayoutChanges="true"
+        tools:context=".ui.tasks.TaskDescriptionActivity">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/dark_gray">
-
-            <ImageButton
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/dark_gray"
-                android:contentDescription="@string/back_button"
-                android:src="@drawable/ic_back" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/logo"
-                android:src="@drawable/logo"
-                android:transitionName="app_bar_logo" />
-
-            <TextView
-                android:id="@+id/app_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text=""
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <RelativeLayout
-        android:id="@+id/circular_clock"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/round_view"
-        android:orientation="vertical"
-        app:layout_constraintCircleRadius="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar">
-
-        <LinearLayout
-            android:id="@+id/time_layout"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/_04_20"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                android:textColor="@color/red"
-                android:textStyle="bold" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/dark_gray">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/hrs"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/red"
-                android:textStyle="bold" />
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_gray"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/ic_back" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/logo"
+                    android:src="@drawable/logo"
+                    android:transitionName="app_bar_logo" />
+
+                <TextView
+                    android:id="@+id/app_bar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text=""
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:id="@+id/circular_clock"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/round_view"
+            android:orientation="vertical"
+            app:layout_constraintCircleRadius="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
 
             <LinearLayout
+                android:id="@+id/time_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/start" />
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/_04_20"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                    android:textColor="@color/red"
+                    android:textStyle="bold" />
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/done" />
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/hrs"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textColor="@color/red"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/start" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/done" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    </RelativeLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/description_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/circular_clock">
-
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/description_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/circular_clock">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/desc_title"
-                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/task_description"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/dropdown_menu"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/dropdown_menu"
+                    android:id="@+id/task_desc"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@id/desc_title"
-                    android:layout_alignParentEnd="true"
-                    android:contentDescription="@string/drop_down_menu"
-                    android:src="@drawable/ic_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="@string/task_description"
+                    android:textColor="@color/white" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/desc_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/lorem_ipsum"
+                    android:textColor="@color/light_gray" />
 
-            <TextView
-                android:id="@+id/desc_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/lorem_ipsum"
-                android:visibility="gone" />
+            </LinearLayout>
 
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/members_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/description_card">
-
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/add_members_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_card">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/members_title"
-                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/task_description"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/task_dropdown_menu"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/task_dropdown_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@string/modify_members"
+                    android:src="@drawable/ic_people" />
+
+                <TextView
+                    android:id="@+id/members"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@id/members_title"
-                    android:layout_alignParentEnd="true"
-                    android:contentDescription="@string/drop_down_menu"
-                    android:src="@drawable/ic_down"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="@string/modify_members"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/members_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/lorem_ipsum"
-                android:visibility="gone" />
+            </LinearLayout>
 
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -23,14 +23,8 @@ class TaskDescriptionActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.descriptionCard.setOnClickListener {
-            if (binding.descBody.visibility == View.GONE) {
-                binding.descBody.visibility = View.VISIBLE
-                binding.dropdownMenu.rotation = 180f
-            } else {
-                binding.descBody.visibility = View.GONE
-                binding.dropdownMenu.rotation = 0f
-            }
+        binding.addMembersCard.setOnClickListener {
+
         }
     }
 }

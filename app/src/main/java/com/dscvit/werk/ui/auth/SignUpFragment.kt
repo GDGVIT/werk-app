@@ -1,5 +1,6 @@
 package com.dscvit.werk.ui.auth
 
+import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -9,13 +10,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
+import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSignUpBinding
+import com.dscvit.werk.ui.utils.showErrorSnackBar
+import com.dscvit.werk.ui.utils.showSuccessSnackBar
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
-    private val TAG: String = this.javaClass.simpleName;
+    private val TAG: String = this.javaClass.simpleName
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +50,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.signUpButton.setOnClickListener {
-            viewModel.initSignUpUser("vishal", "abc@gmail.com", "test1234")
+            viewModel.initSignUpUser("vishal", "abc@gmai.com", "test1234")
 
 //            val extras = FragmentNavigatorExtras(binding.logo to "app_bar_logo")
 //            findNavController().navigate(
@@ -58,9 +65,11 @@ class SignUpFragment : Fragment() {
                 when (event) {
                     is AuthViewModel.SignUpEvent.Success -> {
                         Log.d(TAG, event.signUpResponse.toString())
+                        view.showSuccessSnackBar("Sign up successful! :)")
                     }
                     is AuthViewModel.SignUpEvent.Failure -> {
                         Log.d(TAG, event.errorMessage)
+                        view.showErrorSnackBar(event.errorMessage)
                     }
                     AuthViewModel.SignUpEvent.Loading -> {
                         Log.d(TAG, "SIGN UP IN PROGRESS...")

@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.auth.SignUpFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    tools:context=".ui.auth.SignUpFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -24,9 +24,9 @@
             android:layout_height="80dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="24dp"
-            android:transitionName="logo_small"
             android:contentDescription="@string/logo"
             android:src="@drawable/logo"
+            android:transitionName="logo_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,8 +88,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name"
                     android:layout_marginTop="16dp"
+                    android:hint="@string/name"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -132,9 +132,9 @@
         <View
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/details_content"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.dscvit.werk.di
 
+import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.network.ApiInterface
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.repository.AppRepositoryImpl
@@ -26,5 +27,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAppRepository(api: ApiInterface): AppRepository = AppRepositoryImpl(api)
+    fun provideApiClient(api: ApiInterface): ApiClient = ApiClient(api)
+
+    @Singleton
+    @Provides
+    fun provideAppRepository(apiClient: ApiClient): AppRepository = AppRepositoryImpl(apiClient)
 }

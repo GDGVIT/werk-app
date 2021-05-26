@@ -1,15 +1,11 @@
 package com.dscvit.werk.ui.auth
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +17,6 @@ import com.dscvit.werk.ui.utils.afterTextChanged
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.ui.utils.showSuccessSnackBar
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -96,31 +91,31 @@ class SignUpFragment : Fragment() {
                     binding.passwordInput.editText?.text.toString(),
                 )
             }
-
-//            val extras = FragmentNavigatorExtras(binding.logo to "app_bar_logo")
-//            findNavController().navigate(
-//                R.id.action_signUpFragment_to_sessionsOverviewFragment, null,
-//                null,
-//                extras
-//            )
         }
 
-        val loader = requireContext().buildLoader("")
+        val loader = requireContext().buildLoader()
 
         lifecycleScope.launchWhenStarted {
             viewModel.signUpUser.collect { event ->
                 when (event) {
-                    is AuthViewModel.SignUpEvent.Success -> {
-                        Log.d(TAG, event.signUpResponse.toString())
+                    is AuthViewModel.AuthEvent.Success -> {
                         view.showSuccessSnackBar("Sign up successful! :)")
                         loader.hide()
+
+                        val extras = FragmentNavigatorExtras(binding.logo to "app_bar_logo")
+                        findNavController().navigate(
+                            R.id.action_signUpFragment_to_sessionsOverviewFragment, null,
+                            null,
+                            extras
+                        )
+                        requireActivity().finish()
                     }
-                    is AuthViewModel.SignUpEvent.Failure -> {
+                    is AuthViewModel.AuthEvent.Failure -> {
                         Log.d(TAG, event.errorMessage)
                         view.showErrorSnackBar(event.errorMessage)
                         loader.hide()
                     }
-                    AuthViewModel.SignUpEvent.Loading -> {
+                    AuthViewModel.AuthEvent.Loading -> {
                         Log.d(TAG, "SIGN UP IN PROGRESS...")
                         loader.show()
                     }

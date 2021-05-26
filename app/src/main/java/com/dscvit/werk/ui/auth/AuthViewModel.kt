@@ -3,8 +3,8 @@ package com.dscvit.werk.ui.auth
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
-import com.dscvit.werk.models.auth.SignUpResponse
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -15,24 +15,45 @@ import kotlinx.coroutines.launch
 class AuthViewModel @ViewModelInject constructor(
     private val repository: AppRepository
 ) : ViewModel() {
-    sealed class SignUpEvent {
-        class Success(val signUpResponse: SignUpResponse) : SignUpEvent()
-        class Failure(val errorMessage: String) : SignUpEvent()
-        object Loading : SignUpEvent()
-        object Initial : SignUpEvent()
+    sealed class AuthEvent {
+        object Success : AuthEvent()
+        class Failure(val errorMessage: String) : AuthEvent()
+        object Loading : AuthEvent()
+        object Initial : AuthEvent()
     }
 
-    private val _signUpUser = MutableStateFlow<SignUpEvent>(SignUpEvent.Initial)
-    val signUpUser: StateFlow<SignUpEvent> = _signUpUser
+    private val _signUpUser = MutableStateFlow<AuthEvent>(AuthEvent.Initial)
+    val signUpUser: StateFlow<AuthEvent> = _signUpUser
 
     fun initSignUpUser(name: String, email: String, password: String) {
         val signUpRequest = SignUpRequest(email, name, password)
 
         viewModelScope.launch(Dispatchers.IO) {
-            _signUpUser.value = SignUpEvent.Loading
+            _signUpUser.value = AuthEvent.Loading
             when (val response = repository.signUpUser(signUpRequest)) {
-                is Resource.Error -> _signUpUser.value = SignUpEvent.Failure(response.message!!)
-                is Resource.Success -> _signUpUser.value = SignUpEvent.Success(response.data!!)
+                is Resource.Error -> _signUpUser.value = AuthEvent.Failure(response.message!!)
+                is Resource.Success -> {
+                    repository.saveJWTToken(response.data!!.token)
+                    _signUpUser.value = AuthEvent.Success
+                }
+            }
+        }
+    }
+
+    private val _signInUser = MutableStateFlow<AuthEvent>(AuthEvent.Initial)
+    val signInUser: StateFlow<AuthEvent> = _signInUser
+
+    fun initSignInUser(email: String, password: String) {
+        val signInRequest = SignInRequest(email, password)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _signInUser.value = AuthEvent.Loading
+            when (val response = repository.signInUser(signInRequest)) {
+                is Resource.Error -> _signInUser.value = AuthEvent.Failure(response.message!!)
+                is Resource.Success -> {
+                    repository.saveJWTToken(response.data!!.token)
+                    _signInUser.value = AuthEvent.Success
+                }
             }
         }
     }

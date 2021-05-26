@@ -41,7 +41,7 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     })
 }
 
-fun Context.buildLoader(message: String): androidx.appcompat.app.AlertDialog {
+fun Context.buildLoader(): androidx.appcompat.app.AlertDialog {
     val dialog = MaterialAlertDialogBuilder(this)
 
     dialog.setCancelable(false)

@@ -1,10 +1,18 @@
 package com.dscvit.werk.ui.utils
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.EditText
+import com.dscvit.werk.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.snackbar.Snackbar
 
 fun View.showErrorSnackBar(message: String) {
@@ -31,4 +39,13 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
+}
+
+fun Context.buildLoader(message: String): androidx.appcompat.app.AlertDialog {
+    val dialog = MaterialAlertDialogBuilder(this)
+
+    dialog.setCancelable(false)
+    dialog.setView(R.layout.loading_layout)
+
+    return dialog.create()
 }

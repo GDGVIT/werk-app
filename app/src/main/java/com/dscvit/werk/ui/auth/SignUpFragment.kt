@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSignUpBinding
 import com.dscvit.werk.ui.utils.afterTextChanged
+import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.ui.utils.showSuccessSnackBar
 import com.google.android.material.snackbar.Snackbar
@@ -104,41 +105,29 @@ class SignUpFragment : Fragment() {
 //            )
         }
 
+        val loader = requireContext().buildLoader("")
+
         lifecycleScope.launchWhenStarted {
             viewModel.signUpUser.collect { event ->
                 when (event) {
                     is AuthViewModel.SignUpEvent.Success -> {
                         Log.d(TAG, event.signUpResponse.toString())
                         view.showSuccessSnackBar("Sign up successful! :)")
-                        enableViews()
+                        loader.hide()
                     }
                     is AuthViewModel.SignUpEvent.Failure -> {
                         Log.d(TAG, event.errorMessage)
                         view.showErrorSnackBar(event.errorMessage)
-                        enableViews()
+                        loader.hide()
                     }
                     AuthViewModel.SignUpEvent.Loading -> {
                         Log.d(TAG, "SIGN UP IN PROGRESS...")
-                        disableViews()
+                        loader.show()
                     }
                     else -> {
                     }
                 }
             }
         }
-    }
-
-    private fun enableViews() {
-        binding.emailInput.isEnabled = true
-        binding.nameInput.isEnabled = true
-        binding.passwordInput.isEnabled = true
-        binding.signUpButton.isEnabled = true
-    }
-
-    private fun disableViews() {
-        binding.emailInput.isEnabled = false
-        binding.nameInput.isEnabled = false
-        binding.passwordInput.isEnabled = false
-        binding.signUpButton.isEnabled = false
     }
 }

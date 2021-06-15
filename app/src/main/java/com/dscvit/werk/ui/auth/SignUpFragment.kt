@@ -108,7 +108,6 @@ class SignUpFragment : Fragment() {
                             null,
                             extras
                         )
-                        requireActivity().finish()
                     }
                     is AuthViewModel.AuthEvent.Failure -> {
                         Log.d(TAG, event.errorMessage)

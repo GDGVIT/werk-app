@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
+import com.dscvit.werk.util.APP_PREF
+import com.dscvit.werk.util.PREF_TOKEN
+import com.dscvit.werk.util.PrefHelper
+import com.dscvit.werk.util.PrefHelper.set
 import com.google.android.material.tabs.TabLayoutMediator
 
 class SessionsOverviewFragment : Fragment() {
@@ -81,6 +87,30 @@ class SessionsOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.profileButton.setOnClickListener {
+            val popup = PopupMenu(requireContext(), binding.profileButton)
+            popup.menuInflater.inflate(R.menu.overview_profile_menu, popup.menu)
+
+            popup.setOnMenuItemClickListener {
+                if (it.itemId == R.id.sign_out) {
+                    val sharedPrefs = PrefHelper.customPrefs(requireContext(), APP_PREF)
+                    sharedPrefs[PREF_TOKEN] = ""
+
+                    val action =
+                        SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToWelcomeFragment()
+                    findNavController().navigate(action)
+
+                    return@setOnMenuItemClickListener true
+                } else {
+                    Toast.makeText(requireContext(), it.itemId.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnMenuItemClickListener true
+                }
+            }
+
+            popup.show()
+        }
 
         val adapter = OverviewViewPagerAdapter(childFragmentManager, lifecycle)
         binding.viewPager.adapter = adapter

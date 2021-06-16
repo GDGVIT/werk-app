@@ -31,10 +31,10 @@ class SessionFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, pos ->
             when (pos) {
                 0 -> {
-                    tab.text = "UPCOMING"
+                    tab.text = "ALL"
                 }
                 1 -> {
-                    tab.text = "ONGOING"
+                    tab.text = "FOR YOU"
                 }
                 2 -> {
                     tab.text = "COMPLETED"

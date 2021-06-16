@@ -42,7 +42,7 @@
     <string name="walkie_talkie">Walkie Talkie</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="total_time_elapsed">Total time elapsed</string>
-    <string name="_04_20">04 : 20</string>
+    <string name="_04_20">00 : 00</string>
     <string name="let_s_start">Let\'s Start</string>
     <string name="i_m_done">I\'m Done!</string>
     <string name="task_title">Task Title</string>
@@ -56,4 +56,7 @@
     <string name="loading_ma_pls_wait">Loading ma, Pls wait...</string>
     <string name="profile_image">profile image</string>
     <string name="sign_out">Sign Out</string>
+    <string name="total_time_spent_working">Total time spent working 🔥</string>
+    <string name="all">ALL</string>
+    <string name="for_you">FOR YOU</string>
 </resources>

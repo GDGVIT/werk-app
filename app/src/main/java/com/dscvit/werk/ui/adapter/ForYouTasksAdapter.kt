@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
 
-class UpcomingTasksAdapter : RecyclerView.Adapter<UpcomingTasksAdapter.ViewHolder>() {
+class ForYouTasksAdapter : RecyclerView.Adapter<ForYouTasksAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {}
 
@@ -19,6 +19,6 @@ class UpcomingTasksAdapter : RecyclerView.Adapter<UpcomingTasksAdapter.ViewHolde
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {}
 
-    override fun getItemCount() = 4
+    override fun getItemCount() = 1
 
 }

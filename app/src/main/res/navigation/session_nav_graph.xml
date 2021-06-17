@@ -37,5 +37,10 @@
         android:id="@+id/taskDescriptionActivity"
         android:name="com.dscvit.werk.ui.tasks.TaskDescriptionActivity"
         android:label="activity_task_description"
-        tools:layout="@layout/activity_task_description" />
+        tools:layout="@layout/activity_task_description">
+
+        <argument
+            android:name="task"
+            app:argType="com.dscvit.werk.models.task.TempTask" />
+    </activity>
 </navigation>

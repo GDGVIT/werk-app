@@ -1,3 +1,12 @@
 package com.dscvit.werk.models.task
 
-data class TempTask(val title: String, val description: String, val isTaskStarted: Boolean)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class TempTask(
+    val id: Int,
+    val title: String,
+    val description: String,
+    val isTaskStarted: Boolean
+) : Parcelable

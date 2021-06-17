@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
@@ -28,7 +29,11 @@ class TaskDescriptionActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.appBarTitle.text = "Task Name"
+        val navArgs by navArgs<TaskDescriptionActivityArgs>()
+        val task = navArgs.task
+
+        binding.appBarTitle.text = task.title
+        binding.descBody.text = task.description
 
         binding.backButton.setOnClickListener {
             finish()
@@ -53,12 +58,12 @@ class TaskDescriptionActivity : AppCompatActivity() {
         }
 
         val intentFilter = IntentFilter()
-        intentFilter.addAction("Counter")
+        intentFilter.addAction("TaskTimer${task.id}")
 
         val broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, p1: Intent?) {
                 val time = p1?.getIntExtra("TimeElapsed", 0)
-                Log.d("Timer", "ACTIVITY: $time")
+                Log.d("Timer", "ACTIVITY Task ${task.id}: $time")
             }
         }
 

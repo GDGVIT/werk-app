@@ -8,7 +8,7 @@ import com.dscvit.werk.R
 
 class AllTasksAdapter : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {}
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)

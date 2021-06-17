@@ -83,6 +83,9 @@
             app:popExitAnim="@anim/fragment_open_exit"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_sessionsOverviewFragment_to_sessionActivity"
+            app:destination="@id/sessionActivity" />
     </fragment>
     <fragment
         android:id="@+id/joinSessionFragment"

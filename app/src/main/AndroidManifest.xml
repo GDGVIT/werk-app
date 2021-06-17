@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Werk">
-        <activity android:name=".ui.tasks.TaskDescriptionActivity"></activity>
+        <service android:name=".service.TimerService" />
+
+        <activity android:name=".ui.tasks.TaskDescriptionActivity" />
         <activity android:name=".ui.SessionActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>

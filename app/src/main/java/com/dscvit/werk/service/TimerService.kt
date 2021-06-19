@@ -1,9 +1,15 @@
 package com.dscvit.werk.service
 
-import android.app.Service
+import android.app.*
 import android.content.Intent
+import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import com.dscvit.werk.R
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -17,15 +23,20 @@ class TimerService : Service() {
 
     private val timerMap = HashMap<Int, Int>()
     private val timers = HashMap<Int, Timer>()
+    private val taskNames = HashMap<Int, String>()
     private val isTimerRunning = HashMap<Int, Boolean>().withDefault { false }
 
     override fun onBind(p0: Intent?): IBinder? {
         Log.d("Timer", "On Bind Called")
-        return null;
+        return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val taskID = intent?.getIntExtra("TaskID", -1)!!
+        val taskName = intent.getStringExtra("TaskName")!!
+
+        taskNames[taskID] = taskName
 
         when (intent.getStringExtra("Action")!!) {
             START -> startTimer(taskID)
@@ -52,18 +63,22 @@ class TimerService : Service() {
 
                 timerMap[taskID] = timerMap[taskID]!!.plus(1)
 
-//                notificationUpdate(timerMap[taskID]!!, taskID)
+                showNotification(taskID)
 
                 timerIntent.putExtra("TimeElapsed", timerMap[taskID]!!)
                 sendBroadcast(timerIntent)
             }
         }, 0, 1000)
+
+        startForeground(taskID, getNotification(taskID))
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun pauseTimer(taskID: Int) {
         timers[taskID]!!.cancel()
         isTimerRunning[taskID] = false
         sendStatus(taskID)
+        showNotification(taskID)
     }
 
     private fun sendStatus(taskID: Int) {
@@ -74,34 +89,40 @@ class TimerService : Service() {
         sendBroadcast(statusIntent)
     }
 
-//    private fun notificationUpdate(timeElapsed: Int, taskID: Int) {
-//        try {
-//            val notificationIntent = Intent(this, MainActivity::class.java)
-//            val pendingIntent =
-//                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT)
-//
-//            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setOngoing(true)
-//                .setContentTitle("Task Name in progress")
-//                .setContentText("Time you have been working on it: $timeElapsed")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentIntent(pendingIntent)
-//                .build()
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                val notificationChannel = NotificationChannel(
-//                    CHANNEL_ID,
-//                    "Werk Tasks",
-//                    NotificationManager.IMPORTANCE_MIN
-//                )
-//                val notificationManager = getSystemService(NotificationManager::class.java)
-//                notificationManager.createNotificationChannel(notificationChannel)
-//                notificationManager.notify(taskID, notification)
-//            }
-//
-//            startForeground(taskID, notification)
-//        } catch (e: Exception) {
-//            Log.e("Timer", e.toString())
-//        }
-//    }
+    private fun createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                CHANNEL_ID,
+                "Werk Tasks",
+                NotificationManager.IMPORTANCE_MIN
+            )
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    private fun getNotification(taskID: Int): Notification {
+        val title = if (isTimerRunning[taskID] == true) {
+            "${taskNames[taskID]} is in progress!"
+        } else {
+            "${taskNames[taskID]} is paused!"
+        }
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setOngoing(true)
+            .setContentTitle(title)
+            .setContentText("Time you have been working on it: ${timerMap[taskID]}")
+            .setSmallIcon(R.drawable.logo)
+            .build()
+    }
+
+    private fun showNotification(taskID: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel()
+            getSystemService(NotificationManager::class.java)?.notify(
+                taskID,
+                getNotification(taskID)
+            )
+        }
+    }
 }

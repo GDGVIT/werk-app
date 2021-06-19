@@ -38,7 +38,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
         val navArgs by navArgs<TaskDescriptionActivityArgs>()
         task = navArgs.task
 
-        getTimerStatus(task.id)
+        getTimerStatus(task.id, task.title)
 
         binding.appBarTitle.text = task.title
         binding.descBody.text = task.description
@@ -62,7 +62,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
         }
 
         binding.toggleButton.setOnClickListener {
-            if (isTimerRunning) pauseTimer(task.id) else startTimer(task.id)
+            if (isTimerRunning) pauseTimer(task.id, task.title) else startTimer(task.id, task.title)
         }
     }
 
@@ -105,23 +105,26 @@ class TaskDescriptionActivity : AppCompatActivity() {
         unregisterReceiver(timerReceiver)
     }
 
-    private fun startTimer(taskID: Int) {
+    private fun startTimer(taskID: Int, taskName: String) {
         val timerService = Intent(this, TimerService::class.java)
         timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("TaskName", taskName)
         timerService.putExtra("Action", TimerService.START)
         startService(timerService)
     }
 
-    private fun pauseTimer(taskID: Int) {
+    private fun pauseTimer(taskID: Int, taskName: String) {
         val timerService = Intent(this, TimerService::class.java)
         timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("TaskName", taskName)
         timerService.putExtra("Action", TimerService.PAUSE)
         startService(timerService)
     }
 
-    private fun getTimerStatus(taskID: Int) {
+    private fun getTimerStatus(taskID: Int, taskName: String) {
         val timerService = Intent(this, TimerService::class.java)
         timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("TaskName", taskName)
         timerService.putExtra("Action", TimerService.GET_STATUS)
         startService(timerService)
     }

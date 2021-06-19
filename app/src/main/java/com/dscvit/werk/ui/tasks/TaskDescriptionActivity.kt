@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.ActivityTaskDescriptionBinding
+import com.dscvit.werk.models.task.TempTask
 import com.dscvit.werk.service.TimerService
 import com.dscvit.werk.ui.adapter.MemberDialogAdapter
 
@@ -22,6 +23,11 @@ class TaskDescriptionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTaskDescriptionBinding
     private lateinit var membersAdapter: MemberDialogAdapter
     private lateinit var membersDialogBox: Dialog
+    private lateinit var task: TempTask
+
+    private lateinit var statusReceiver: BroadcastReceiver
+    private lateinit var timerReceiver: BroadcastReceiver
+    private var isTimerRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +36,9 @@ class TaskDescriptionActivity : AppCompatActivity() {
         setContentView(view)
 
         val navArgs by navArgs<TaskDescriptionActivityArgs>()
-        val task = navArgs.task
+        task = navArgs.task
+
+        getTimerStatus(task.id)
 
         binding.appBarTitle.text = task.title
         binding.descBody.text = task.description
@@ -54,26 +62,67 @@ class TaskDescriptionActivity : AppCompatActivity() {
         }
 
         binding.toggleButton.setOnClickListener {
-            startTimer()
+            if (isTimerRunning) pauseTimer(task.id) else startTimer(task.id)
         }
-
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("TaskTimer${task.id}")
-
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(p0: Context?, p1: Intent?) {
-                val time = p1?.getIntExtra("TimeElapsed", 0)
-                Log.d("Timer", "ACTIVITY Task ${task.id}: $time")
-            }
-        }
-
-        registerReceiver(broadcastReceiver, intentFilter)
     }
 
-    private fun startTimer() {
-        val intentService = Intent(this, TimerService::class.java)
-        val taskID = 1
-        intentService.putExtra("TaskID", taskID)
-        startService(intentService)
+    override fun onStart() {
+        super.onStart()
+
+        // Receiving task status from service
+        val statusFiler = IntentFilter()
+        statusFiler.addAction("TaskStatus${task.id}")
+        statusReceiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                val isRunning = p1?.getBooleanExtra("TaskStatus", false)!!
+                isTimerRunning = isRunning
+                Log.d("Timer", "ACTIVITY Task ${task.id} STATUS: $isRunning")
+                val text = if (isRunning) "Pause" else "Start"
+                binding.toggleButton.text = text
+
+                val timeElapsed = p1.getIntExtra("TaskTimeElapsed", 0)
+                binding.timerText.text = timeElapsed.toString()
+            }
+        }
+        registerReceiver(statusReceiver, statusFiler)
+
+        // Receiving time values from service
+        val timerFilter = IntentFilter()
+        timerFilter.addAction("TaskTimer${task.id}")
+        timerReceiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                val time = p1?.getIntExtra("TimeElapsed", 0)
+                binding.timerText.text = time.toString()
+            }
+        }
+        registerReceiver(timerReceiver, timerFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        unregisterReceiver(statusReceiver)
+        unregisterReceiver(timerReceiver)
+    }
+
+    private fun startTimer(taskID: Int) {
+        val timerService = Intent(this, TimerService::class.java)
+        timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("Action", TimerService.START)
+        startService(timerService)
+    }
+
+    private fun pauseTimer(taskID: Int) {
+        val timerService = Intent(this, TimerService::class.java)
+        timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("Action", TimerService.PAUSE)
+        startService(timerService)
+    }
+
+    private fun getTimerStatus(taskID: Int) {
+        val timerService = Intent(this, TimerService::class.java)
+        timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("Action", TimerService.GET_STATUS)
+        startService(timerService)
     }
 }

@@ -17,7 +17,7 @@ class AuthViewModel @ViewModelInject constructor(
 ) : ViewModel() {
     sealed class AuthEvent {
         object Success : AuthEvent()
-        class Failure(val errorMessage: String) : AuthEvent()
+        class Failure(val errorMessage: String, val statusCode: Int) : AuthEvent()
         object Loading : AuthEvent()
         object Initial : AuthEvent()
     }
@@ -31,7 +31,8 @@ class AuthViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _signUpUser.value = AuthEvent.Loading
             when (val response = repository.signUpUser(signUpRequest)) {
-                is Resource.Error -> _signUpUser.value = AuthEvent.Failure(response.message!!)
+                is Resource.Error -> _signUpUser.value =
+                    AuthEvent.Failure(response.message!!, response.statusCode ?: -1)
                 is Resource.Success -> {
                     repository.saveJWTToken(response.data!!.token)
                     _signUpUser.value = AuthEvent.Success
@@ -49,7 +50,8 @@ class AuthViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _signInUser.value = AuthEvent.Loading
             when (val response = repository.signInUser(signInRequest)) {
-                is Resource.Error -> _signInUser.value = AuthEvent.Failure(response.message!!)
+                is Resource.Error -> _signInUser.value =
+                    AuthEvent.Failure(response.message!!, response.statusCode ?: -1)
                 is Resource.Success -> {
                     repository.saveJWTToken(response.data!!.token)
                     _signInUser.value = AuthEvent.Success

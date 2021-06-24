@@ -13,24 +13,27 @@ open class BaseApiClient {
             return if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
-                    Resource.Success(body)
+                    Resource.Success(body, response.code())
                 } else {
-                    Resource.Error("Server error :(")
+                    Resource.Error("Server error :(", response.code())
                 }
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 if (BuildConfig.DEBUG) {
-                    Resource.Error("${response.code()}: ${errorBody.getString("error")}")
+                    Resource.Error(
+                        "${response.code()}: ${errorBody.getString("error")}",
+                        response.code()
+                    )
                 } else {
-                    Resource.Error("Error: ${errorBody.getString("error")} :(")
+                    Resource.Error("Error: ${errorBody.getString("error")} :(", response.code())
                 }
             }
         } catch (e: Exception) {
             val errorMessage = e.message ?: e.toString()
             return if (BuildConfig.DEBUG) {
-                Resource.Error("Network called failed with message $errorMessage")
+                Resource.Error("Network called failed with message $errorMessage", -1)
             } else {
-                Resource.Error("Check your internet connection pls!")
+                Resource.Error("Check your internet connection pls!", -1)
             }
         }
     }

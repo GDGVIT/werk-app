@@ -17,6 +17,7 @@ import com.dscvit.werk.ui.utils.afterTextChanged
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.ui.utils.showSuccessSnackBar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -98,8 +99,19 @@ class SignInFragment : Fragment() {
                         )
                     }
                     is AuthViewModel.AuthEvent.Failure -> {
-                        Log.d(TAG, event.errorMessage)
-                        view.showErrorSnackBar(event.errorMessage)
+                        Log.d(TAG, event.errorMessage + event.statusCode)
+                        if (event.statusCode == 401) {
+                            // Show dialog for user to understand they need to verify their email
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Email Verification")
+                                .setMessage("We have sent you a confirmation email, please use it to verify your email and try again 😉")
+                                .setPositiveButton("Yep, Understood") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .show()
+                        } else {
+                            view.showErrorSnackBar(event.errorMessage)
+                        }
                         loader.hide()
                     }
                     AuthViewModel.AuthEvent.Loading -> {

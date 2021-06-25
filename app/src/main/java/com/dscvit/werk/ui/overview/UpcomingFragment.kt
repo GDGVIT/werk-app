@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentUpcomingBinding
 import com.dscvit.werk.ui.adapter.UpcomingSessionsAdapter
-import com.dscvit.werk.ui.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -51,6 +50,7 @@ class UpcomingFragment : Fragment() {
                                 binding.recyclerView.visibility = View.GONE
                             } else {
                                 binding.emptyText.visibility = View.GONE
+                                adapter.updateSessions(it)
                                 binding.recyclerView.visibility = View.VISIBLE
                             }
                         }

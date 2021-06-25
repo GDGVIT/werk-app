@@ -51,6 +51,7 @@ class CompletedFragment : Fragment() {
                                 binding.recyclerView.visibility = View.GONE
                             } else {
                                 binding.emptyText.visibility = View.GONE
+                                adapter.updateSessions(it)
                                 binding.recyclerView.visibility = View.VISIBLE
                             }
                         }

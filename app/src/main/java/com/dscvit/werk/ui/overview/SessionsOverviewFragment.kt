@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,7 +32,7 @@ import kotlinx.coroutines.flow.collect
 class SessionsOverviewFragment : Fragment() {
     private val TAG: String = this.javaClass.simpleName
 
-    private val viewModel: OverviewViewModel by viewModels()
+    private val viewModel: OverviewViewModel by activityViewModels()
 
     private var _binding: FragmentSessionsOverviewBinding? = null
     private val binding get() = _binding!!

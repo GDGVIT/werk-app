@@ -1,6 +1,7 @@
 package com.dscvit.werk.di
 
 import android.content.Context
+import android.util.Log
 import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.network.ApiInterface
 import com.dscvit.werk.repository.AppRepository
@@ -37,17 +38,17 @@ object AppModule {
         val httpClient = OkHttpClient.Builder()
         val sharedPref = PrefHelper.customPrefs(context, APP_PREF)
 
-        val token = sharedPref.getString(PREF_TOKEN, "")
-        val tokenStr = if (token != "") {
-            "Bearer $token"
-        } else {
-            ""
-        }
-
         httpClient.connectTimeout(25, TimeUnit.SECONDS)
         httpClient.readTimeout(25, TimeUnit.SECONDS)
 
         httpClient.addInterceptor { chain ->
+            val token = sharedPref.getString(PREF_TOKEN, "")
+            val tokenStr = if (token != "") {
+                "Bearer $token"
+            } else {
+                ""
+            }
+
             val original = chain.request()
             val requestBuilder = original.newBuilder()
                 .addHeader(

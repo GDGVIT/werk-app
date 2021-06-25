@@ -11,8 +11,16 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingVertical="24dp"
+        android:visibility="gone"
         tools:itemCount="3"
         tools:listitem="@layout/session_item" />
 
+    <TextView
+        android:id="@+id/empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/nothing_here_yet"
+        android:visibility="gone" />
 
 </FrameLayout>

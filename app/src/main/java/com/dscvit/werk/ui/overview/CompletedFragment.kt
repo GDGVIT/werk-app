@@ -44,13 +44,21 @@ class CompletedFragment : Fragment() {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
-                        Log.d(TAG, event.sessionsResponse.toString())
+                        viewModel.completedSessions.collect {
+                            Log.d(TAG, "Completed Sessions: $it")
+                            if (it.isEmpty()) {
+                                binding.emptyText.visibility = View.VISIBLE
+                                binding.recyclerView.visibility = View.GONE
+                            } else {
+                                binding.emptyText.visibility = View.GONE
+                                binding.recyclerView.visibility = View.VISIBLE
+                            }
+                        }
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")
                     }
                     is OverviewViewModel.GetSessionsEvent.Failure -> {
-                        view.showErrorSnackBar(event.errorMessage)
                     }
                     else -> {
                     }

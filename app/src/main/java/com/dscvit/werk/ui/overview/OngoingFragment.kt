@@ -52,23 +52,17 @@ class OngoingFragment : Fragment() {
             }
         })
 
-        binding.ongoingRefresh.setOnRefreshListener {
-            viewModel.getSessions()
-        }
-
         lifecycleScope.launchWhenCreated {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
                         Log.d(TAG, event.sessionsResponse.toString())
-                        binding.ongoingRefresh.isRefreshing = false
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")
                     }
                     is OverviewViewModel.GetSessionsEvent.Failure -> {
                         view.showErrorSnackBar(event.errorMessage)
-                        binding.ongoingRefresh.isRefreshing = false
                     }
                     else -> {
                     }

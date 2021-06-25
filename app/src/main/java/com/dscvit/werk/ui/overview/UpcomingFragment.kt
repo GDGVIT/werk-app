@@ -40,23 +40,17 @@ class UpcomingFragment : Fragment() {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        binding.upcomingRefresh.setOnRefreshListener {
-            viewModel.getSessions()
-        }
-
         lifecycleScope.launchWhenCreated {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
                         Log.d(TAG, event.sessionsResponse.toString())
-                        binding.upcomingRefresh.isRefreshing = false
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")
                     }
                     is OverviewViewModel.GetSessionsEvent.Failure -> {
                         view.showErrorSnackBar(event.errorMessage)
-                        binding.upcomingRefresh.isRefreshing = false
                     }
                     else -> {
                     }

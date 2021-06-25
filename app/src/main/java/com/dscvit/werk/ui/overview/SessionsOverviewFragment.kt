@@ -12,14 +12,12 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
 import com.dscvit.werk.ui.utils.buildLoader
-import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
 import com.dscvit.werk.util.PrefHelper
@@ -108,20 +106,33 @@ class SessionsOverviewFragment : Fragment() {
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
                         Log.d(TAG, event.sessionsResponse.toString())
+                        binding.sessionRefresh.isRefreshing = false
+                        binding.errorText.visibility = View.GONE
+                        binding.viewPager.visibility = View.VISIBLE
                         loader.hide()
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")
+                        binding.errorText.visibility = View.GONE
+                        binding.viewPager.visibility = View.GONE
                         loader.show()
                     }
                     is OverviewViewModel.GetSessionsEvent.Failure -> {
-                        view.showErrorSnackBar(event.errorMessage)
+                        Log.d(TAG, event.errorMessage)
+                        binding.errorText.visibility = View.VISIBLE
+                        binding.viewPager.visibility = View.GONE
+                        binding.errorText.text = event.errorMessage
                         loader.hide()
+                        binding.sessionRefresh.isRefreshing = false
                     }
                     else -> {
                     }
                 }
             }
+        }
+
+        binding.sessionRefresh.setOnRefreshListener {
+            viewModel.getSessions()
         }
 
         viewModel.getSessions()

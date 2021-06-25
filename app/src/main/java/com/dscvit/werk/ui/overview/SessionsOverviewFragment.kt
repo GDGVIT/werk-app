@@ -2,6 +2,7 @@ package com.dscvit.werk.ui.overview
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +11,28 @@ import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
+import com.dscvit.werk.ui.utils.buildLoader
+import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
 import com.dscvit.werk.util.PrefHelper
 import com.dscvit.werk.util.PrefHelper.set
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class SessionsOverviewFragment : Fragment() {
+    private val TAG: String = this.javaClass.simpleName
+
+    private val viewModel: OverviewViewModel by viewModels()
+
     private var _binding: FragmentSessionsOverviewBinding? = null
     private val binding get() = _binding!!
 
@@ -87,6 +99,31 @@ class SessionsOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val loader = requireContext().buildLoader()
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.sessions.collect { event ->
+                when (event) {
+                    is OverviewViewModel.GetSessionsEvent.Success -> {
+                        Log.d(TAG, event.sessionsResponse.toString())
+                        loader.hide()
+                    }
+                    is OverviewViewModel.GetSessionsEvent.Loading -> {
+                        Log.d(TAG, "LOADING....")
+                        loader.show()
+                    }
+                    is OverviewViewModel.GetSessionsEvent.Failure -> {
+                        view.showErrorSnackBar(event.errorMessage)
+                        loader.hide()
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+
+        viewModel.getSessions()
 
         binding.profileButton.setOnClickListener {
             val popup = PopupMenu(requireContext(), binding.profileButton)

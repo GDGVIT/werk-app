@@ -16,4 +16,8 @@ class ApiClient @Inject constructor(
         api.signInUser(signInRequest)
     }
 
+    suspend fun getSessions() = processResponse {
+        api.getSessions()
+    }
+
 }

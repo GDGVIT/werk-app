@@ -6,21 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentCreateSessionBinding
+import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateSessionFragment : Fragment() {
     private var _binding: FragmentCreateSessionBinding? = null
     private val binding get() = _binding!!
+
+    private var startDateTimeStr = ""
+    private var endDateTimeStr = ""
+    private val emailList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,9 +43,6 @@ class CreateSessionFragment : Fragment() {
         binding.appBar.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-
-        var startDateTimeStr = ""
-        var endDateTimeStr = ""
 
         binding.startDateInput.editText!!.setOnClickListener {
             val dateBuilder = MaterialDatePicker.Builder.datePicker()
@@ -102,6 +104,16 @@ class CreateSessionFragment : Fragment() {
             }
         }
 
+        binding.emailInput.editText!!.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val email = textView.text.toString()
+                textView.text = null
+                addEmailChipToGroup(email)
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
         binding.nextButton.setOnClickListener {
             try {
                 val formatter = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH)
@@ -114,6 +126,31 @@ class CreateSessionFragment : Fragment() {
 //            findNavController().navigate(action)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun addEmailChipToGroup(
+        email: String,
+    ) {
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && !emailList.contains(
+                email
+            )
+        ) {
+            emailList.add(email)
+
+            val chip = Chip(requireContext())
+            chip.text = email
+
+            chip.isClickable = true
+            chip.isCheckable = false
+            chip.isCloseIconVisible = true
+
+            binding.emailChipGroup.addView(chip)
+
+            chip.setOnCloseIconClickListener {
+                binding.emailChipGroup.removeView(chip)
+                emailList.remove(email)
             }
         }
     }

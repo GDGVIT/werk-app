@@ -24,6 +24,13 @@
             android:layout_margin="24dp"
             android:orientation="vertical">
 
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/session_details"
+                android:textColor="@color/white" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/session_name_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -133,6 +140,45 @@
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/participant_details"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/participant_emails"
+                app:startIconDrawable="@drawable/ic_email_solid">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/email_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:singleLine="true" />
+
+            </HorizontalScrollView>
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/member_create_task_check"

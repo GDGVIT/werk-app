@@ -65,4 +65,7 @@
     <string name="task_assigned_to">Task Assigned To</string>
     <string name="nothing_here_yet">Nothing here yet 😕</string>
     <string name="allow_team_members_to_assign_tasks">Allow team members to assign tasks?</string>
+    <string name="session_details">Session Details</string>
+    <string name="participant_details">Participant Details</string>
+    <string name="participant_emails">Participant Emails</string>
 </resources>

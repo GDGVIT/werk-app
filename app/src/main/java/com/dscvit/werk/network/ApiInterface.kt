@@ -4,6 +4,8 @@ import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignInResponse
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.auth.SignUpResponse
+import com.dscvit.werk.models.sessions.CreateSessionRequest
+import com.dscvit.werk.models.sessions.CreateSessionResponse
 import com.dscvit.werk.models.sessions.SessionsResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,4 +21,7 @@ interface ApiInterface {
 
     @GET("/session")
     suspend fun getSessions(): Response<SessionsResponse>
+
+    @POST("/session/create")
+    suspend fun createSession(@Body createSessionRequest: CreateSessionRequest): Response<CreateSessionResponse>
 }

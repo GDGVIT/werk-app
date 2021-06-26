@@ -15,7 +15,7 @@ data class CreateSessionRequest(
     @SerializedName("startTime")
     val startTime: Long,
     @SerializedName("taskAssignByAll")
-    val taskAssignByAll: Int,
+    val taskAssignByAll: Boolean,
     @SerializedName("taskCreationByAll")
-    val taskCreationByAll: Int
+    val taskCreationByAll: Boolean
 )

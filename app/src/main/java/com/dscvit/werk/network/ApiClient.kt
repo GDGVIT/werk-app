@@ -2,6 +2,7 @@ package com.dscvit.werk.network
 
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
+import com.dscvit.werk.models.sessions.CreateSessionRequest
 import javax.inject.Inject
 
 class ApiClient @Inject constructor(
@@ -18,6 +19,10 @@ class ApiClient @Inject constructor(
 
     suspend fun getSessions() = processResponse {
         api.getSessions()
+    }
+
+    suspend fun createSession(createSessionRequest: CreateSessionRequest) = processResponse {
+        api.createSession(createSessionRequest)
     }
 
 }

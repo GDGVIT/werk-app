@@ -36,7 +36,7 @@
     <string name="invite">Invite</string>
     <string name="members">Members</string>
     <string name="add">Add</string>
-    <string name="team_code">Team Code</string>
+    <string name="team_code">Session Code</string>
     <string name="allow_team_members_to_create_tasks">Allow team members to create tasks?</string>
     <string name="all_done_lets_go">All done, Lets Go!</string>
     <string name="session">Session</string>

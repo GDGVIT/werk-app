@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="8122391"
+                android:text="04f0fb4cdd"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <ImageView
@@ -49,6 +49,7 @@
                 android:src="@drawable/or" />
 
             <ImageView
+                android:id="@+id/qr_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

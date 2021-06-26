@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.sessions.CreateSessionRequest
+import com.dscvit.werk.models.sessions.CreateSessionResponse
 import com.dscvit.werk.models.sessions.Session
 import com.dscvit.werk.models.sessions.SessionsResponse
 import com.dscvit.werk.repository.AppRepository
@@ -71,6 +73,28 @@ class OverviewViewModel @ViewModelInject constructor(
                     }
                     _sessions.value = GetSessionsEvent.Success(response.data!!)
                 }
+            }
+        }
+    }
+
+    sealed class CreateSessionEvent {
+        data class Success(val createSessionResponse: CreateSessionResponse) : CreateSessionEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : CreateSessionEvent()
+        object Loading : CreateSessionEvent()
+        object Initial : CreateSessionEvent()
+    }
+
+    private val _createSession = MutableStateFlow<CreateSessionEvent>(CreateSessionEvent.Initial)
+    val createSession: StateFlow<CreateSessionEvent> = _createSession
+
+    fun createASession(createSessionRequest: CreateSessionRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _createSession.value = CreateSessionEvent.Loading
+            when (val response = appRepository.createSession(createSessionRequest)) {
+                is Resource.Error -> _createSession.value =
+                    CreateSessionEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _createSession.value =
+                    CreateSessionEvent.Success(response.data!!)
             }
         }
     }

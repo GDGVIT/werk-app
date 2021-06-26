@@ -92,4 +92,8 @@ dependencies {
     // Coroutine Lifecycle Scopes
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+
+    // QR Code Generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.3'
 }

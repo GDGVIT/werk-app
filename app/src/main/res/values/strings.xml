@@ -26,8 +26,10 @@
     <string name="or_line">Or line</string>
     <string name="code">Enter Code</string>
     <string name="join">Join</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_date">End Date</string>
+    <string name="end_time">End Time</string>
     <string name="description">Description</string>
     <string name="enter_a_description">Enter a Description…</string>
     <string name="next">Next</string>
@@ -62,4 +64,5 @@
     <string name="modify">Modify</string>
     <string name="task_assigned_to">Task Assigned To</string>
     <string name="nothing_here_yet">Nothing here yet 😕</string>
+    <string name="allow_team_members_to_assign_tasks">Allow team members to assign tasks?</string>
 </resources>

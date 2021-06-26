@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
 import com.dscvit.werk.models.sessions.Session
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OngoingSessionsAdapter : RecyclerView.Adapter<OngoingSessionsAdapter.ViewHolder>() {
 
@@ -33,10 +35,18 @@ class OngoingSessionsAdapter : RecyclerView.Adapter<OngoingSessionsAdapter.ViewH
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val sessionNameView = view.findViewById<TextView>(R.id.session_name_text)
         private val sessionDescView = view.findViewById<TextView>(R.id.session_desc_text)
+        private val sessionTimeView = view.findViewById<TextView>(R.id.session_time_text)
+        private val sessionDateView = view.findViewById<TextView>(R.id.session_date_text)
 
         fun bind(session: Session) {
             sessionNameView.text = session.sessionDetails.sessionName
             sessionDescView.text = session.sessionDetails.sessionDescription
+
+            val startDate = Date(session.sessionDetails.startTime)
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
+            sessionTimeView.text = timeFormat.format(startDate)
+            sessionDateView.text = dateFormat.format(startDate)
         }
     }
 }

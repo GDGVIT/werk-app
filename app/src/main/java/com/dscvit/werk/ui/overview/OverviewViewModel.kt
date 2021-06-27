@@ -38,6 +38,11 @@ class OverviewViewModel @ViewModelInject constructor(
     fun getSessions() {
         viewModelScope.launch(Dispatchers.IO) {
             _sessions.value = GetSessionsEvent.Loading
+
+            _upcomingSession.value.clear()
+            _ongoingSession.value.clear()
+            _completedSession.value.clear()
+
             when (val response = appRepository.getSessions()) {
                 is Resource.Error -> _sessions.value =
                     GetSessionsEvent.Failure(response.message ?: "", response.statusCode ?: -1)

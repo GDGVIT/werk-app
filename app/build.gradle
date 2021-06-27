@@ -100,4 +100,7 @@ dependencies {
 
     // Permissions
     implementation 'com.sagar:dslpermission:2.0.3'
+
+    // Coil for network images
+    implementation("io.coil-kt:coil:1.2.2")
 }

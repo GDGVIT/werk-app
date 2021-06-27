@@ -62,28 +62,40 @@
             app:layout_constraintTop_toTopOf="@id/session_date_text">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_img_3"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginHorizontal="2dp"
-                android:src="@color/red" />
+                android:src="@color/red"
+                android:visibility="gone" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_img_2"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginHorizontal="2dp"
-                android:src="@color/red" />
+                android:src="@color/red"
+                android:visibility="gone" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_img_1"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginHorizontal="2dp"
-                android:src="@color/red" />
+                android:src="@color/red"
+                android:visibility="gone" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="28dp"
+            <TextView
+                android:id="@+id/additional_users"
+                android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:layout_marginStart="2dp"
-                android:src="@color/red" />
+                android:background="@drawable/round_text"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:text="+12"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
 

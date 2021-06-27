@@ -3,6 +3,7 @@ package com.dscvit.werk.ui.auth
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.repository.AppRepository
@@ -57,6 +58,13 @@ class AuthViewModel @ViewModelInject constructor(
                     _signInUser.value = AuthEvent.Success
                 }
             }
+        }
+    }
+
+    fun sendVerificationEmail(email: String) {
+        val sendVerificationRequest = SendVerificationRequest(email)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.sendVerificationEmail(sendVerificationRequest)
         }
     }
 }

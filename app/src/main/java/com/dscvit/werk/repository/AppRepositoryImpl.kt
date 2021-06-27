@@ -1,6 +1,7 @@
 package com.dscvit.werk.repository
 
 import android.content.Context
+import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignInResponse
 import com.dscvit.werk.models.auth.SignUpRequest
@@ -32,6 +33,9 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun joinSession(joinSessionRequest: JoinSessionRequest) =
         apiClient.joinSession(joinSessionRequest)
+
+    override suspend fun sendVerificationEmail(sendVerificationRequest: SendVerificationRequest) =
+        apiClient.sendVerificationEmail(sendVerificationRequest)
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

@@ -1,5 +1,6 @@
 package com.dscvit.werk.network
 
+import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.sessions.CreateSessionRequest
@@ -29,5 +30,10 @@ class ApiClient @Inject constructor(
     suspend fun joinSession(joinSessionRequest: JoinSessionRequest) = processResponse {
         api.joinSession(joinSessionRequest)
     }
+
+    suspend fun sendVerificationEmail(sendVerificationRequest: SendVerificationRequest) =
+        processResponse {
+            api.sendVerificationEmail(sendVerificationRequest)
+        }
 
 }

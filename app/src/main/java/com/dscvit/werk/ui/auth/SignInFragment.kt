@@ -33,6 +33,8 @@ class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
 
+    private var email: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val animation = TransitionInflater.from(requireContext()).inflateTransition(
@@ -79,6 +81,7 @@ class SignInFragment : Fragment() {
                     binding.emailInput.editText?.text.toString(),
                     binding.passwordInput.editText?.text.toString(),
                 )
+                email = binding.emailInput.editText?.text.toString()
             }
         }
 
@@ -100,12 +103,16 @@ class SignInFragment : Fragment() {
                     }
                     is AuthViewModel.AuthEvent.Failure -> {
                         Log.d(TAG, event.errorMessage + event.statusCode)
-                        if (event.statusCode == 401) {
+                        if (event.statusCode == 401 && event.errorMessage.contains("not verified")) {
                             // Show dialog for user to understand they need to verify their email
                             MaterialAlertDialogBuilder(requireContext())
                                 .setTitle("Email Verification")
                                 .setMessage("We have sent you a confirmation email, please use it to verify your email and try again 😉")
-                                .setPositiveButton("Yep, Understood") { dialog, _ ->
+                                .setPositiveButton("Cool") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .setNegativeButton("Send again") { dialog, _ ->
+                                    viewModel.sendVerificationEmail(email)
                                     dialog.dismiss()
                                 }
                                 .show()

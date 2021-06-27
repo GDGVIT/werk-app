@@ -56,19 +56,22 @@
                 android:contentDescription="@string/or_line"
                 android:src="@drawable/sampleqr" />
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:contentDescription="@string/or_line"
-                android:src="@drawable/ic_share" />
+                android:layout_marginTop="48dp"
+                android:text="@string/share"
+                app:icon="@drawable/ic_share" />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/next_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="48dp"
+                android:layout_marginVertical="24dp"
                 android:padding="12dp"
                 android:text="@string/all_done_lets_go" />
 

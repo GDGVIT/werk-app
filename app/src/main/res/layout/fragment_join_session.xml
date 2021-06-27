@@ -32,6 +32,7 @@
                 android:layout_margin="24dp">
 
                 <LinearLayout
+                    android:id="@+id/scan_qr_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

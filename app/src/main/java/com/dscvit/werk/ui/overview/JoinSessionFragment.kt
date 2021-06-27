@@ -1,5 +1,8 @@
 package com.dscvit.werk.ui.overview
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +17,8 @@ import com.dscvit.werk.databinding.FragmentJoinSessionBinding
 import com.dscvit.werk.models.sessions.JoinSessionRequest
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
+import com.eazypermissions.common.model.PermissionResult
+import com.eazypermissions.dsl.extension.requestPermissions
 import kotlinx.coroutines.flow.collect
 
 class JoinSessionFragment : Fragment() {
@@ -38,6 +43,10 @@ class JoinSessionFragment : Fragment() {
         binding.appBar.appBarTitle.text = requireContext().getString(R.string.join_a_session)
         binding.appBar.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.scanQrLayout.setOnClickListener {
+            requestPermissionAndLaunchQRScanner()
         }
 
         binding.joinButton.setOnClickListener {
@@ -66,6 +75,42 @@ class JoinSessionFragment : Fragment() {
                     is OverviewViewModel.JoinSessionEvent.Success -> {
                         loader.hide()
                         Log.d(TAG, "SESSION JOINED: ${event.joinSessionResponse}")
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                val code = data?.getStringExtra("code")
+                binding.codeInput.editText!!.setText(code)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.d("BRR", "Cancelled")
+            }
+        }
+    }
+
+    private fun requestPermissionAndLaunchQRScanner() {
+        requestPermissions(Manifest.permission.CAMERA) {
+            requestCode = 4
+            resultCallback = {
+                when (this) {
+                    is PermissionResult.PermissionGranted -> {
+                        val intent = Intent(requireContext(), QRScannerActivity::class.java)
+                        startActivityForResult(intent, 1)
+                    }
+                    is PermissionResult.PermissionDenied -> {
+                        view?.showErrorSnackBar("Need camera permission for QR Scanner")
+                    }
+                    is PermissionResult.PermissionDeniedPermanently -> {
+                        view?.showErrorSnackBar("You need to enable camera permission from settings for the QR Scanner")
                     }
                     else -> {
                     }

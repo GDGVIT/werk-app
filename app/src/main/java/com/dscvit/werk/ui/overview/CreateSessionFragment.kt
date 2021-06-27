@@ -166,7 +166,7 @@ class CreateSessionFragment : Fragment() {
 
         val loader = requireContext().buildLoader()
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             viewModel.createSession.collect { event ->
                 when (event) {
                     is OverviewViewModel.CreateSessionEvent.Loading -> {

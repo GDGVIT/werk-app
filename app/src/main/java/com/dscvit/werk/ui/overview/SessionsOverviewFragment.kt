@@ -35,6 +35,8 @@ class SessionsOverviewFragment : Fragment() {
     private var _binding: FragmentSessionsOverviewBinding? = null
     private val binding get() = _binding!!
 
+    private var openedOnce = false
+
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             requireContext(),
@@ -101,7 +103,7 @@ class SessionsOverviewFragment : Fragment() {
 
         val loader = requireContext().buildLoader()
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
@@ -135,7 +137,10 @@ class SessionsOverviewFragment : Fragment() {
             viewModel.getSessions()
         }
 
-        viewModel.getSessions()
+        if (!openedOnce) {
+            viewModel.getSessions()
+            openedOnce = true
+        }
 
         binding.profileButton.setOnClickListener {
             val popup = PopupMenu(requireContext(), binding.profileButton)

@@ -4,9 +4,7 @@ import android.content.Context
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignInResponse
 import com.dscvit.werk.models.auth.SignUpRequest
-import com.dscvit.werk.models.sessions.CreateSessionRequest
-import com.dscvit.werk.models.sessions.CreateSessionResponse
-import com.dscvit.werk.models.sessions.SessionsResponse
+import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
@@ -31,6 +29,9 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun createSession(createSessionRequest: CreateSessionRequest) =
         apiClient.createSession(createSessionRequest)
+
+    override suspend fun joinSession(joinSessionRequest: JoinSessionRequest) =
+        apiClient.joinSession(joinSessionRequest)
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

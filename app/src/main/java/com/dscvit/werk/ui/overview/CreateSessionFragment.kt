@@ -179,6 +179,7 @@ class CreateSessionFragment : Fragment() {
                         view.showErrorSnackBar(event.errorMessage)
                     }
                     is OverviewViewModel.CreateSessionEvent.Success -> {
+                        loader.hide()
                         Log.d(TAG, "SESSION CREATED: ${event.createSessionResponse}")
                     }
                     else -> {

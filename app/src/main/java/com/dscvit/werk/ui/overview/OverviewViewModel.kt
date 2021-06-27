@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dscvit.werk.models.sessions.CreateSessionRequest
-import com.dscvit.werk.models.sessions.CreateSessionResponse
-import com.dscvit.werk.models.sessions.Session
-import com.dscvit.werk.models.sessions.SessionsResponse
+import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -95,6 +92,28 @@ class OverviewViewModel @ViewModelInject constructor(
                     CreateSessionEvent.Failure(response.message ?: "", response.statusCode ?: -1)
                 is Resource.Success -> _createSession.value =
                     CreateSessionEvent.Success(response.data!!)
+            }
+        }
+    }
+
+    sealed class JoinSessionEvent {
+        data class Success(val joinSessionResponse: JoinSessionResponse) : JoinSessionEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : JoinSessionEvent()
+        object Loading : JoinSessionEvent()
+        object Initial : JoinSessionEvent()
+    }
+
+    private val _joinSession = MutableStateFlow<JoinSessionEvent>(JoinSessionEvent.Initial)
+    val joinSession: StateFlow<JoinSessionEvent> = _joinSession
+
+    fun joinASession(joinSessionRequest: JoinSessionRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _joinSession.value = JoinSessionEvent.Loading
+            when (val response = appRepository.joinSession(joinSessionRequest)) {
+                is Resource.Error -> _joinSession.value =
+                    JoinSessionEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _joinSession.value =
+                    JoinSessionEvent.Success(response.data!!)
             }
         }
     }

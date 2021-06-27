@@ -4,9 +4,7 @@ import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignInResponse
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.auth.SignUpResponse
-import com.dscvit.werk.models.sessions.CreateSessionRequest
-import com.dscvit.werk.models.sessions.CreateSessionResponse
-import com.dscvit.werk.models.sessions.SessionsResponse
+import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.util.Resource
 
 interface AppRepository {
@@ -17,6 +15,8 @@ interface AppRepository {
     suspend fun getSessions(): Resource<SessionsResponse>
 
     suspend fun createSession(createSessionRequest: CreateSessionRequest): Resource<CreateSessionResponse>
+
+    suspend fun joinSession(joinSessionRequest: JoinSessionRequest): Resource<JoinSessionResponse>
 
     fun saveJWTToken(token: String)
 

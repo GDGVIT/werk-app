@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CreateSessionResponse(
     @SerializedName("session")
-    val session: SessionDetails
+    val session: CreateSession
 )

@@ -14,6 +14,7 @@ import androidmads.library.qrgenearator.QRGEncoder
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentInviteBinding
 import java.io.File
@@ -21,12 +22,13 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class InviteFragment : Fragment() {
     private var _binding: FragmentInviteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var qrBitmap: Bitmap
+
+    private val args: InviteFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +46,9 @@ class InviteFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        val qrEncoder = QRGEncoder("04f0fb4cdd", null, QRGContents.Type.TEXT, 360)
+        binding.sessionCode.text = args.code
+
+        val qrEncoder = QRGEncoder(args.code, null, QRGContents.Type.TEXT, 360)
         try {
             qrBitmap = qrEncoder.bitmap
             binding.qrCode.setImageBitmap(qrBitmap)
@@ -74,7 +78,7 @@ class InviteFragment : Fragment() {
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     putExtra(
                         Intent.EXTRA_TEXT,
-                        "Join the session with the QR code or with the exclusive code: 04f0fb4cdd"
+                        "Join the session with the QR code or with the exclusive code: ${args.code}"
                     )
                     putExtra(Intent.EXTRA_STREAM, qrImageFileUri)
                     type = "image/png"
@@ -88,7 +92,7 @@ class InviteFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            val action = InviteFragmentDirections.actionInviteFragmentToSessionActivity()
+            val action = InviteFragmentDirections.actionInviteFragmentToSessionsOverviewFragment()
             findNavController().navigate(action)
         }
     }

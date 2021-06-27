@@ -125,43 +125,39 @@ class CreateSessionFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-//            try {
-//                if (binding.sessionNameInput.editText!!.text.toString()
-//                        .isNotEmpty() && binding.startDateInput.editText!!.text.toString()
-//                        .isNotEmpty() && binding.startTimeInput.editText!!.text.toString()
-//                        .isNotEmpty() && binding.endDateInput.editText!!.text.toString()
-//                        .isNotEmpty() && binding.endTimeInput.editText!!.text.toString()
-//                        .isNotEmpty() && binding.descriptionInput.editText!!.text.toString()
-//                        .isNotEmpty() && emailList.isNotEmpty()
-//                ) {
-//                    val formatter = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH)
-//                    val startDateTime = formatter.parse(startDateTimeStr)
-//                    val endDateTime = formatter.parse(endDateTimeStr)
-//
-//                    val createSessionRequest =
-//                        CreateSessionRequest(
-//                            binding.descriptionInput.editText!!.text.toString(),
-//                            endDateTime!!.time,
-//                            binding.sessionNameInput.editText!!.text.toString(),
-//                            emailList,
-//                            startDateTime!!.time,
-//                            binding.memberAssignTaskCheck.isChecked,
-//                            binding.memberCreateTaskCheck.isChecked,
-//                        )
-//
-//                    Log.d(TAG, createSessionRequest.toString())
-//
-//                    viewModel.createASession(createSessionRequest)
-//                } else {
-//                    view.showErrorSnackBar("All fields are required.")
-//                }
-//            } catch (e: Exception) {
-//                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
-//            }
+            try {
+                if (binding.sessionNameInput.editText!!.text.toString()
+                        .isNotEmpty() && binding.startDateInput.editText!!.text.toString()
+                        .isNotEmpty() && binding.startTimeInput.editText!!.text.toString()
+                        .isNotEmpty() && binding.endDateInput.editText!!.text.toString()
+                        .isNotEmpty() && binding.endTimeInput.editText!!.text.toString()
+                        .isNotEmpty() && binding.descriptionInput.editText!!.text.toString()
+                        .isNotEmpty() && emailList.isNotEmpty()
+                ) {
+                    val formatter = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH)
+                    val startDateTime = formatter.parse(startDateTimeStr)
+                    val endDateTime = formatter.parse(endDateTimeStr)
 
-            val action =
-                CreateSessionFragmentDirections.actionCreateSessionFragmentToInviteFragment()
-            findNavController().navigate(action)
+                    val createSessionRequest =
+                        CreateSessionRequest(
+                            binding.descriptionInput.editText!!.text.toString(),
+                            endDateTime!!.time,
+                            binding.sessionNameInput.editText!!.text.toString(),
+                            emailList,
+                            startDateTime!!.time,
+                            binding.memberAssignTaskCheck.isChecked,
+                            binding.memberCreateTaskCheck.isChecked,
+                        )
+
+                    Log.d(TAG, "$createSessionRequest Current time: ${Date().time}")
+
+                    viewModel.createASession(createSessionRequest)
+                } else {
+                    view.showErrorSnackBar("All fields are required.")
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
 
         val loader = requireContext().buildLoader()
@@ -180,6 +176,11 @@ class CreateSessionFragment : Fragment() {
                     }
                     is OverviewViewModel.CreateSessionEvent.Success -> {
                         loader.hide()
+                        val action =
+                            CreateSessionFragmentDirections.actionCreateSessionFragmentToInviteFragment(
+                                event.createSessionResponse.session.accessCode
+                            )
+                        findNavController().navigate(action)
                         Log.d(TAG, "SESSION CREATED: ${event.createSessionResponse}")
                     }
                     else -> {

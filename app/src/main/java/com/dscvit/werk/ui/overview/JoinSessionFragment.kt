@@ -53,9 +53,6 @@ class JoinSessionFragment : Fragment() {
             if (binding.codeInput.editText!!.text.toString().isNotEmpty()) {
                 viewModel.joinASession(JoinSessionRequest(binding.codeInput.editText!!.text.toString()))
             }
-
-//            val action = JoinSessionFragmentDirections.actionJoinSessionFragmentToSessionActivity()
-//            findNavController().navigate(action)
         }
 
         val loader = requireContext().buildLoader()
@@ -74,6 +71,7 @@ class JoinSessionFragment : Fragment() {
                     }
                     is OverviewViewModel.JoinSessionEvent.Success -> {
                         loader.hide()
+                        findNavController().popBackStack()
                         Log.d(TAG, "SESSION JOINED: ${event.joinSessionResponse}")
                     }
                     else -> {

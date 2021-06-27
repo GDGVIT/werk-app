@@ -91,12 +91,7 @@
         android:id="@+id/joinSessionFragment"
         android:name="com.dscvit.werk.ui.overview.JoinSessionFragment"
         android:label="fragment_join_session"
-        tools:layout="@layout/fragment_join_session">
-        <action
-            android:id="@+id/action_joinSessionFragment_to_sessionActivity"
-            app:destination="@id/sessionActivity"
-            app:popUpTo="@id/sessionsOverviewFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_join_session"/>
     <fragment
         android:id="@+id/createSessionFragment"
         android:name="com.dscvit.werk.ui.overview.CreateSessionFragment"

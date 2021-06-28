@@ -1,8 +1,11 @@
 package com.dscvit.werk.models.sessions
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class SessionDetails(
     @SerializedName("accessCode")
     val accessCode: String,
@@ -26,4 +29,4 @@ data class SessionDetails(
     val taskCreationUniv: Boolean,
     @SerializedName("updatedAt")
     val updatedAt: String
-)
+): Parcelable

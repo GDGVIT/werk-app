@@ -22,6 +22,8 @@ class OngoingSessionsAdapter : RecyclerView.Adapter<OngoingSessionsAdapter.ViewH
         notifyDataSetChanged()
     }
 
+    fun getSessionDetails(index: Int) = sessionsList[index].sessionDetails
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.session_item, viewGroup, false)

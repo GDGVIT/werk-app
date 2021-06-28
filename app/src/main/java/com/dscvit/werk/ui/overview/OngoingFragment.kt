@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.dscvit.werk.databinding.FragmentOngoingBinding
 import com.dscvit.werk.ui.adapter.OngoingSessionsAdapter
 import com.dscvit.werk.ui.utils.OnItemClickListener
 import com.dscvit.werk.ui.utils.addOnItemClickListener
-import com.dscvit.werk.ui.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -47,7 +45,9 @@ class OngoingFragment : Fragment() {
         binding.recyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 val action =
-                    SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToSessionActivity()
+                    SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToSessionActivity(
+                        adapter.getSessionDetails(position)
+                    )
                 findNavController().navigate(action)
             }
         })

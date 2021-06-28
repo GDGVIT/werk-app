@@ -3,12 +3,15 @@ package com.dscvit.werk.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.ActivitySessionBinding
 
 class SessionActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySessionBinding
+
+    private val args: SessionActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,7 @@ class SessionActivity : AppCompatActivity() {
         val navController = findNavController(R.id.session_nav_host_fragment)
         binding.bottomNavigation.setupWithNavController(navController)
 
-        binding.appBarTitle.text = getString(R.string.session)
+        binding.appBarTitle.text = args.session.sessionName
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             val appBarTitle: String = when (it.itemId) {
                 R.id.sessionFragment -> {

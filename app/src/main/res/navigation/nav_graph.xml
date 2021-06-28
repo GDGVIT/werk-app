@@ -124,5 +124,9 @@
         android:id="@+id/sessionActivity"
         android:name="com.dscvit.werk.ui.SessionActivity"
         android:label="activity_session"
-        tools:layout="@layout/activity_session" />
+        tools:layout="@layout/activity_session">
+        <argument
+            android:name="session"
+            app:argType="com.dscvit.werk.models.sessions.SessionDetails" />
+    </activity>
 </navigation>

@@ -11,6 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentUpcomingBinding
 import com.dscvit.werk.ui.adapter.UpcomingSessionsAdapter
+import com.dscvit.werk.ui.utils.OnItemClickListener
+import com.dscvit.werk.ui.utils.addOnItemClickListener
+import com.dscvit.werk.ui.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -38,6 +41,12 @@ class UpcomingFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.recyclerView.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                view.showErrorSnackBar("Please wait for session to start 😕")
+            }
+        })
 
         lifecycleScope.launchWhenCreated {
             viewModel.sessions.collect { event ->

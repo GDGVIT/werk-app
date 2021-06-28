@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentCompletedBinding
 import com.dscvit.werk.ui.adapter.CompletedSessionsAdapter
+import com.dscvit.werk.ui.utils.OnItemClickListener
+import com.dscvit.werk.ui.utils.addOnItemClickListener
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -39,6 +41,12 @@ class CompletedFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.recyclerView.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                view.showErrorSnackBar("Session already completed 😕")
+            }
+        })
 
         lifecycleScope.launchWhenCreated {
             viewModel.sessions.collect { event ->

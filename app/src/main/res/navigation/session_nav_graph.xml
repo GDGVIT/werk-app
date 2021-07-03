@@ -17,6 +17,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_sessionFragment_to_createTaskActivity"
+            app:destination="@id/createTaskActivity" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -43,4 +46,9 @@
             android:name="task"
             app:argType="com.dscvit.werk.models.task.TempTask" />
     </activity>
+    <activity
+        android:id="@+id/createTaskActivity"
+        android:name="com.dscvit.werk.ui.tasks.CreateTaskActivity"
+        android:label="activity_create_task"
+        tools:layout="@layout/activity_create_task" />
 </navigation>

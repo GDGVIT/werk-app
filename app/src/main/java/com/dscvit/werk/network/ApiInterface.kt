@@ -2,10 +2,13 @@ package com.dscvit.werk.network
 
 import com.dscvit.werk.models.auth.*
 import com.dscvit.werk.models.sessions.*
+import com.dscvit.werk.models.task.TaskRequest
+import com.dscvit.werk.models.task.TaskResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiInterface {
     @POST("/auth/register")
@@ -25,4 +28,7 @@ interface ApiInterface {
 
     @POST("/auth/verifyEmail")
     suspend fun sendVerificationEmail(@Body sendVerificationRequest: SendVerificationRequest): Response<Any>
+
+    @GET("/task/session/{sessionID}")
+    suspend fun getTasks(@Path("sessionID") sessionID: Int): Response<TaskResponse>
 }

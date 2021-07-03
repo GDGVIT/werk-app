@@ -69,4 +69,5 @@
     <string name="participant_details">Participant Details</string>
     <string name="participant_emails">Participant Emails</string>
     <string name="share">Share</string>
+    <string name="create_a_task">Create a Task</string>
 </resources>

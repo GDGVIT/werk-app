@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Werk">
+        <activity android:name=".ui.tasks.CreateTaskActivity"></activity>
         <activity android:name=".ui.overview.QRScannerActivity" />
 
         <service android:name=".service.TimerService" />

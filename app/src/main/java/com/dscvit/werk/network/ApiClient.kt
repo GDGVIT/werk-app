@@ -5,6 +5,7 @@ import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.JoinSessionRequest
+import com.dscvit.werk.models.task.TaskRequest
 import javax.inject.Inject
 
 class ApiClient @Inject constructor(
@@ -35,5 +36,7 @@ class ApiClient @Inject constructor(
         processResponse {
             api.sendVerificationEmail(sendVerificationRequest)
         }
+
+    suspend fun getTasks(sessionID: Int) = processResponse { api.getTasks(sessionID) }
 
 }

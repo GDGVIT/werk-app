@@ -143,7 +143,7 @@ class SessionsOverviewFragment : Fragment() {
         }
 
         binding.profileButton.setOnClickListener {
-            val popup = PopupMenu(requireContext(), binding.profileButton)
+            val popup = PopupMenu(requireContext() , binding.profileButton)
             popup.menuInflater.inflate(R.menu.overview_profile_menu, popup.menu)
 
             popup.setOnMenuItemClickListener {

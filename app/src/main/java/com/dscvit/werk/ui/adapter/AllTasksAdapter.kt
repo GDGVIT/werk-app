@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
+import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.models.task.TempTask
 
 class AllTasksAdapter : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
-    private var tasks = mutableListOf<TempTask>()
+    private var tasks = mutableListOf<Task>()
 
-    fun setTasks(tasks: List<TempTask>) {
-        this.tasks = tasks as MutableList<TempTask>
+    fun setTasks(tasks: List<Task>) {
+        this.tasks = tasks as MutableList<Task>
         notifyDataSetChanged()
     }
 
@@ -33,7 +34,7 @@ class AllTasksAdapter : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
         val title: TextView = view.findViewById(R.id.task_title_text)
         val description: TextView = view.findViewById(R.id.task_desc_text)
 
-        fun bind(task: TempTask) {
+        fun bind(task: Task) {
             title.text = task.title
             description.text = task.description
         }

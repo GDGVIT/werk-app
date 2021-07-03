@@ -6,6 +6,8 @@ import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignInResponse
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.sessions.*
+import com.dscvit.werk.models.task.TaskRequest
+import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
@@ -36,6 +38,8 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun sendVerificationEmail(sendVerificationRequest: SendVerificationRequest) =
         apiClient.sendVerificationEmail(sendVerificationRequest)
+
+    override suspend fun getTasks(sessionID: Int) = apiClient.getTasks(sessionID)
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

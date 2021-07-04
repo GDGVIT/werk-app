@@ -70,4 +70,6 @@
     <string name="participant_emails">Participant Emails</string>
     <string name="share">Share</string>
     <string name="create_a_task">Create a Task</string>
+    <string name="you">You</string>
+    <string name="total_points">Total Points</string>
 </resources>

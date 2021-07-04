@@ -8,6 +8,7 @@ import androidx.navigation.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.ActivitySessionBinding
+import com.dscvit.werk.ui.session.ParticipantsViewModel
 import com.dscvit.werk.ui.tasks.TaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class SessionActivity : AppCompatActivity() {
 
     private val args: SessionActivityArgs by navArgs()
     private val taskViewModel: TaskViewModel by viewModels()
+    private val participantsViewModel: ParticipantsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class SessionActivity : AppCompatActivity() {
         setContentView(view)
 
         taskViewModel.sessionDetails = args.session
+        participantsViewModel.sessionDetails = args.session
 
         setupViews()
     }

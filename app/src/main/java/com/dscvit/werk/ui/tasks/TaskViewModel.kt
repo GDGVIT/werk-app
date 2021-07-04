@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.sessions.SessionDetails
 import com.dscvit.werk.models.task.Task
-import com.dscvit.werk.models.task.TaskRequest
 import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
@@ -17,12 +17,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TaskViewModel @ViewModelInject constructor(
     private val appRepository: AppRepository
 ) : ViewModel() {
     lateinit var sessionDetails: SessionDetails
+    val userDetails: UserDetails = appRepository.getUserDetails()
 
     sealed class GetTasksEvent {
         data class Success(val taskResponse: TaskResponse) : GetTasksEvent()
@@ -59,8 +59,6 @@ class TaskViewModel @ViewModelInject constructor(
                         GetTasksEvent.Failure(response.message ?: "", response.statusCode ?: -1)
                 }
                 is Resource.Success -> {
-                    Log.d("BRR", response.data.toString())
-
                     response.data?.tasks?.forEach {
                         // All Tasks
                         if (it.status != STATUS_COMPLETED) {
@@ -73,7 +71,11 @@ class TaskViewModel @ViewModelInject constructor(
                         }
 
                         // For You Tasks
-
+                        if (it.status != STATUS_COMPLETED) {
+                            if (it.assignedTo == userDetails.userId) {
+                                _forYouTasks.value.add(it)
+                            }
+                        }
                     }
 
                     _tasks.value = GetTasksEvent.Success(response.data!!)

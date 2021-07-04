@@ -5,16 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.dscvit.werk.R
+import com.dscvit.werk.models.participants.Participant
+import de.hdodenhof.circleimageview.CircleImageView
 
 class MemberDialogAdapter : RecyclerView.Adapter<MemberDialogAdapter.ViewHolder>() {
-    private val nameList = listOf(
-        "Rithik Jain",
-        "Neil Kavalakkat",
-        "Chanakya Vivek Kapoor",
-        "Ram Gambhir",
-        "Aryan Singh"
-    )
+    private var participants = mutableListOf<Participant>()
+
+    fun setParticipants(participants: List<Participant>) {
+        this.participants = participants as MutableList<Participant>
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -24,16 +26,20 @@ class MemberDialogAdapter : RecyclerView.Adapter<MemberDialogAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(nameList[position])
+        viewHolder.bind(participants[position])
     }
 
-    override fun getItemCount() = nameList.size
+    override fun getItemCount() = participants.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val memberName = view.findViewById<TextView>(R.id.member_name)
+        private val memberEmail = view.findViewById<TextView>(R.id.member_email)
+        private val memberPhoto = view.findViewById<CircleImageView>(R.id.member_photo)
 
-        fun bind(name: String) {
-            memberName.text = name
+        fun bind(participant: Participant) {
+            memberName.text = participant.name
+            memberEmail.text = participant.email
+            memberPhoto.load(participant.avatar)
         }
     }
 }

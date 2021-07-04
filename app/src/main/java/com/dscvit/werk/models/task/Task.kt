@@ -1,8 +1,11 @@
 package com.dscvit.werk.models.task
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Task(
     @SerializedName("assigned")
     val assigned: Assigned?,
@@ -36,4 +39,4 @@ data class Task(
     val title: String,
     @SerializedName("updatedAt")
     val updatedAt: String
-)
+) : Parcelable

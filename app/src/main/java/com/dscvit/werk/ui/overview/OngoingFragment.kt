@@ -44,10 +44,12 @@ class OngoingFragment : Fragment() {
 
         binding.recyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
+                val session = adapter.getSessionDetails(position)
                 val action =
                     SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToSessionActivity(
-                        adapter.getSessionDetails(position)
+                        session
                     )
+                viewModel.setSessionID(session.sessionId)
                 findNavController().navigate(action)
             }
         })

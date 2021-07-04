@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 class ParticipantsViewModel @ViewModelInject constructor(
     private val appRepository: AppRepository
 ) : ViewModel() {
-    lateinit var sessionDetails: SessionDetails
 
     sealed class GetParticipantsEvent {
         data class Success(val participantsResponse: ParticipantsResponse) : GetParticipantsEvent()
@@ -31,7 +30,7 @@ class ParticipantsViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _participants.value = GetParticipantsEvent.Loading
 
-            when (val response = appRepository.getParticipants(sessionDetails.sessionId)) {
+            when (val response = appRepository.getParticipants(appRepository.getSessionID())) {
                 is Resource.Error -> {
                     _participants.value = GetParticipantsEvent.Failure(
                         response.message ?: "",

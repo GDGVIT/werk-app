@@ -21,6 +21,8 @@ class OverviewViewModel @ViewModelInject constructor(
 ) : ViewModel() {
     val userDetails get() = appRepository.getUserDetails()
 
+    fun setSessionID(sessionID: Int) = appRepository.setSessionID(sessionID)
+
     sealed class GetSessionsEvent {
         data class Success(val sessionsResponse: SessionsResponse) : GetSessionsEvent()
         data class Failure(val errorMessage: String, val statusCode: Int) : GetSessionsEvent()

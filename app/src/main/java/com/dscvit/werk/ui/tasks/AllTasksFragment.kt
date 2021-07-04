@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentAllTasksBinding
-import com.dscvit.werk.models.task.TempTask
 import com.dscvit.werk.ui.adapter.AllTasksAdapter
-import com.dscvit.werk.ui.overview.OverviewViewModel
 import com.dscvit.werk.ui.session.SessionFragmentDirections
 import com.dscvit.werk.ui.utils.OnItemClickListener
 import com.dscvit.werk.ui.utils.addOnItemClickListener
@@ -46,14 +43,16 @@ class AllTasksFragment : Fragment() {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-//        binding.recyclerView
-//            .addOnItemClickListener(object : OnItemClickListener {
-//            override fun onItemClicked(position: Int, view: View) {
-//                val action =
-//                    SessionFragmentDirections.actionSessionFragmentToTaskDescriptionActivity(tasks[position])
-//                findNavController().navigate(action)
-//            }
-//        })
+        binding.recyclerView
+            .addOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClicked(position: Int, view: View) {
+                    val action =
+                        SessionFragmentDirections.actionSessionFragmentToTaskDescriptionActivity(
+                            adapter.getTask(position)
+                        )
+                    findNavController().navigate(action)
+                }
+            })
 
         lifecycleScope.launchWhenResumed {
             viewModel.tasks.collect { event ->

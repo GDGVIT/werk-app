@@ -39,7 +39,7 @@
 
         <argument
             android:name="task"
-            app:argType="com.dscvit.werk.models.task.TempTask" />
+            app:argType="com.dscvit.werk.models.task.Task" />
     </activity>
     <activity
         android:id="@+id/createTaskActivity"

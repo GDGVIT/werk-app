@@ -59,4 +59,14 @@ class AppRepositoryImpl @Inject constructor(
         return Gson().fromJson(userDetailsStr, UserDetails::class.java)
     }
 
+    override fun setSessionID(sessionID: Int) {
+        val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)
+        sharedPrefs[PREF_SESSION_ID] = sessionID
+    }
+
+    override fun getSessionID(): Int {
+        val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)
+        return sharedPrefs[PREF_SESSION_ID] ?: 0
+    }
+
 }

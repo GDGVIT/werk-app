@@ -1,8 +1,11 @@
 package com.dscvit.werk.models.task
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Creator(
     @SerializedName("avatar")
     val avatar: String,
@@ -16,4 +19,4 @@ data class Creator(
     val updatedAt: String,
     @SerializedName("userId")
     val userId: Int
-)
+) : Parcelable

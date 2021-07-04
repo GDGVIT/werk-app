@@ -31,4 +31,8 @@ interface AppRepository {
     fun saveUserDetails(userDetails: UserDetails)
 
     fun getUserDetails(): UserDetails
+
+    fun setSessionID(sessionID: Int)
+
+    fun getSessionID(): Int
 }

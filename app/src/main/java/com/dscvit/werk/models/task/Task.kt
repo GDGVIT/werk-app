@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Task(
     @SerializedName("assigned")
-    val assigned: Assigned,
+    val assigned: Assigned?,
     @SerializedName("assignedTo")
     val assignedTo: Int,
     @SerializedName("completionDuration")

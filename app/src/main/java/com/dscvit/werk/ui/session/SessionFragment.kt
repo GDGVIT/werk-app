@@ -15,6 +15,7 @@ import com.dscvit.werk.ui.adapter.TasksViewPageAdapter
 import com.dscvit.werk.ui.overview.OverviewViewModel
 import com.dscvit.werk.ui.tasks.TaskViewModel
 import com.dscvit.werk.ui.utils.buildLoader
+import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -93,8 +94,12 @@ class SessionFragment : Fragment() {
         }
 
         binding.taskFab.setOnClickListener {
-            val action = SessionFragmentDirections.actionSessionFragmentToCreateTaskActivity()
-            findNavController().navigate(action)
+            if (viewModel.sessionDetails.taskCreationUniv || viewModel.sessionDetails.createdBy.userId == viewModel.userDetails.userId) {
+                val action = SessionFragmentDirections.actionSessionFragmentToCreateTaskActivity()
+                findNavController().navigate(action)
+            } else {
+                view.showErrorSnackBar("Only the host can create tasks 😕")
+            }
         }
 
         viewModel.getTasks()

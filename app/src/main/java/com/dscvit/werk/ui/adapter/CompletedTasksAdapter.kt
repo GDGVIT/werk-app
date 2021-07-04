@@ -1,12 +1,15 @@
 package com.dscvit.werk.ui.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.dscvit.werk.R
 import com.dscvit.werk.models.task.Task
+import de.hdodenhof.circleimageview.CircleImageView
 
 class CompletedTasksAdapter : RecyclerView.Adapter<CompletedTasksAdapter.ViewHolder>() {
     private var tasks = mutableListOf<Task>()
@@ -32,10 +35,20 @@ class CompletedTasksAdapter : RecyclerView.Adapter<CompletedTasksAdapter.ViewHol
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title: TextView = view.findViewById(R.id.task_title_text)
         private val description: TextView = view.findViewById(R.id.task_desc_text)
+        private val assignedPhoto: CircleImageView = view.findViewById(R.id.assigned_photo)
 
         fun bind(task: Task) {
             title.text = task.title
             description.text = task.description
+            if (task.assigned != null) {
+                assignedPhoto.visibility = View.VISIBLE
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    assignedPhoto.tooltipText = task.assigned.email
+                }
+                assignedPhoto.load(task.assigned.avatar)
+            } else {
+                assignedPhoto.visibility = View.GONE
+            }
         }
     }
 

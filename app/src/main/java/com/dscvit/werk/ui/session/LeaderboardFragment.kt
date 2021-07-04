@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.dscvit.werk.databinding.FragmentLeaderboardBinding
+import com.dscvit.werk.ui.adapter.LeaderboardAdapter
 import com.dscvit.werk.ui.utils.buildLoader
+import com.dscvit.werk.ui.utils.showErrorSnackBar
 import kotlinx.coroutines.flow.collect
 
 class LeaderboardFragment : Fragment() {
@@ -34,6 +37,11 @@ class LeaderboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = LeaderboardAdapter()
+        binding.leaderboardRecyclerView.adapter = adapter
+        binding.leaderboardRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         val loader = requireContext().buildLoader()
 
         lifecycleScope.launchWhenResumed {
@@ -46,14 +54,24 @@ class LeaderboardFragment : Fragment() {
                         binding.rankText.text = "#${event.participantsResponse.rank}"
                         binding.totalPointsText.text =
                             event.participantsResponse.user.points.toString()
+
+                        binding.leaderboardRecyclerView.visibility = View.VISIBLE
+                        val leaderboardParticipants =
+                            event.participantsResponse.participants.filter {
+                                it.joined
+                            }
+                        adapter.setParticipants(leaderboardParticipants)
                     }
                     is ParticipantsViewModel.GetParticipantsEvent.Loading -> {
                         Log.d(TAG, "LOADING...")
                         loader.show()
+                        binding.leaderboardRecyclerView.visibility = View.GONE
                     }
                     is ParticipantsViewModel.GetParticipantsEvent.Failure -> {
                         loader.hide()
                         Log.d(TAG, event.errorMessage)
+                        binding.leaderboardRecyclerView.visibility = View.GONE
+                        view.showErrorSnackBar(event.errorMessage)
                     }
                     else -> {
                     }

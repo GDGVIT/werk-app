@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.session.LeaderboardFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/leaderboard_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/leaderboard_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/your_stats"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/your_stats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/gray"
@@ -26,25 +37,27 @@
 
         <TextView
             android:id="@+id/you_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/you"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/rank_text"
+            app:layout_constraintEnd_toStartOf="@+id/total_points_desc_text"
             app:layout_constraintStart_toEndOf="@id/profile_img"
             app:layout_constraintTop_toTopOf="@id/profile_img" />
 
         <TextView
             android:id="@+id/rank_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textColor="@color/red"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/profile_img"
+            app:layout_constraintEnd_toStartOf="@+id/total_points_text"
             app:layout_constraintStart_toEndOf="@id/profile_img"
             app:layout_constraintTop_toBottomOf="@id/you_text" />
 

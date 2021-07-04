@@ -46,11 +46,6 @@ class SessionActivity : AppCompatActivity() {
                     navController.navigate(R.id.chatFragment)
                     "Chat"
                 }
-                R.id.walkieTalkieFragment -> {
-                    navController.popBackStack()
-                    navController.navigate(R.id.walkieTalkieFragment)
-                    "Walkie Talkie"
-                }
                 R.id.leaderboardFragment -> {
                     navController.popBackStack()
                     navController.navigate(R.id.leaderboardFragment)

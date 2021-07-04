@@ -27,11 +27,6 @@
         android:label="Chat"
         tools:layout="@layout/fragment_chat" />
     <fragment
-        android:id="@+id/walkieTalkieFragment"
-        android:name="com.dscvit.werk.ui.session.WalkieTalkieFragment"
-        android:label="Walkie Talkie"
-        tools:layout="@layout/fragment_walkie_talkie" />
-    <fragment
         android:id="@+id/leaderboardFragment"
         android:name="com.dscvit.werk.ui.session.LeaderboardFragment"
         android:label="Leaderboard"

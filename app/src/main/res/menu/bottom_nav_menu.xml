@@ -12,11 +12,6 @@
         android:title="" />
 
     <item
-        android:id="@+id/walkieTalkieFragment"
-        android:icon="@drawable/ic_mic"
-        android:title="" />
-
-    <item
         android:id="@+id/leaderboardFragment"
         android:icon="@drawable/ic_leaderboard"
         android:title="" />

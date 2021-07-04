@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
@@ -16,6 +17,8 @@ import java.util.*
 class OverviewViewModel @ViewModelInject constructor(
     private val appRepository: AppRepository
 ) : ViewModel() {
+    val userDetails get() = appRepository.getUserDetails()
+
     sealed class GetSessionsEvent {
         data class Success(val sessionsResponse: SessionsResponse) : GetSessionsEvent()
         data class Failure(val errorMessage: String, val statusCode: Int) : GetSessionsEvent()

@@ -24,4 +24,8 @@ interface AppRepository {
     fun saveJWTToken(token: String)
 
     fun getJWTToken(): String
+
+    fun saveUserDetails(userDetails: UserDetails)
+
+    fun getUserDetails(): UserDetails
 }

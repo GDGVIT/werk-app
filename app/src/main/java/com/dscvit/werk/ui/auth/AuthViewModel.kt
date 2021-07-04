@@ -36,6 +36,7 @@ class AuthViewModel @ViewModelInject constructor(
                     AuthEvent.Failure(response.message!!, response.statusCode ?: -1)
                 is Resource.Success -> {
                     repository.saveJWTToken(response.data!!.token)
+                    repository.saveUserDetails(response.data.userDetails)
                     _signUpUser.value = AuthEvent.Success
                 }
             }
@@ -55,6 +56,7 @@ class AuthViewModel @ViewModelInject constructor(
                     AuthEvent.Failure(response.message!!, response.statusCode ?: -1)
                 is Resource.Success -> {
                     repository.saveJWTToken(response.data!!.token)
+                    repository.saveUserDetails(response.data.userDetails)
                     _signInUser.value = AuthEvent.Success
                 }
             }

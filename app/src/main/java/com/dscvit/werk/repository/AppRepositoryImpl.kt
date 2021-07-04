@@ -1,20 +1,13 @@
 package com.dscvit.werk.repository
 
 import android.content.Context
-import com.dscvit.werk.models.auth.SendVerificationRequest
-import com.dscvit.werk.models.auth.SignInRequest
-import com.dscvit.werk.models.auth.SignInResponse
-import com.dscvit.werk.models.auth.SignUpRequest
+import com.dscvit.werk.models.auth.*
 import com.dscvit.werk.models.sessions.*
-import com.dscvit.werk.models.task.TaskRequest
-import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.network.ApiClient
-import com.dscvit.werk.util.APP_PREF
-import com.dscvit.werk.util.PREF_TOKEN
-import com.dscvit.werk.util.PrefHelper
+import com.dscvit.werk.util.*
 import com.dscvit.werk.util.PrefHelper.get
 import com.dscvit.werk.util.PrefHelper.set
-import com.dscvit.werk.util.Resource
+import com.google.gson.Gson
 import javax.inject.Inject
 
 class AppRepositoryImpl @Inject constructor(
@@ -49,6 +42,18 @@ class AppRepositoryImpl @Inject constructor(
     override fun getJWTToken(): String {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)
         return sharedPrefs[PREF_TOKEN] ?: ""
+    }
+
+    override fun saveUserDetails(userDetails: UserDetails) {
+        val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)
+        val userDetailsStr = Gson().toJson(userDetails)
+        sharedPrefs[PREF_USER_DETAILS] = userDetailsStr
+    }
+
+    override fun getUserDetails(): UserDetails {
+        val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)
+        val userDetailsStr = sharedPrefs[PREF_USER_DETAILS] ?: ""
+        return Gson().fromJson(userDetailsStr, UserDetails::class.java)
     }
 
 }

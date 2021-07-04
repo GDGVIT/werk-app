@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
@@ -142,8 +143,12 @@ class SessionsOverviewFragment : Fragment() {
             openedOnce = true
         }
 
+        val userDetails = viewModel.userDetails
+
+        binding.profileButton.load(userDetails.avatar)
+
         binding.profileButton.setOnClickListener {
-            val popup = PopupMenu(requireContext() , binding.profileButton)
+            val popup = PopupMenu(requireContext(), binding.profileButton)
             popup.menuInflater.inflate(R.menu.overview_profile_menu, popup.menu)
 
             popup.setOnMenuItemClickListener {

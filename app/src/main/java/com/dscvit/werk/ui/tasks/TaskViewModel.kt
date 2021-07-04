@@ -12,6 +12,7 @@ import com.dscvit.werk.models.task.TaskRequest
 import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
+import com.dscvit.werk.util.STATUS_COMPLETED
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -62,9 +63,17 @@ class TaskViewModel @ViewModelInject constructor(
 
                     response.data?.tasks?.forEach {
                         // All Tasks
-                        withContext(Dispatchers.Main) {
+                        if (it.status != STATUS_COMPLETED) {
                             _allTasks.value.add(it)
                         }
+
+                        // Completed Tasks
+                        if (it.status == STATUS_COMPLETED) {
+                            _completedTasks.value.add(it)
+                        }
+
+                        // For You Tasks
+
                     }
 
                     _tasks.value = GetTasksEvent.Success(response.data!!)

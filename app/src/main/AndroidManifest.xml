@@ -14,14 +14,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Werk">
-        <activity android:name=".ui.tasks.CreateTaskActivity"></activity>
-        <activity android:name=".ui.overview.QRScannerActivity" />
+        <activity
+            android:name=".ui.tasks.CreateTaskActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.overview.QRScannerActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.TimerService" />
 
-        <activity android:name=".ui.tasks.TaskDescriptionActivity" />
-        <activity android:name=".ui.SessionActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity
+            android:name=".ui.tasks.TaskDescriptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SessionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
 import com.dscvit.werk.models.task.Task
-import com.dscvit.werk.models.task.TempTask
 
 class AllTasksAdapter : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
     private var tasks = mutableListOf<Task>()
@@ -31,8 +30,8 @@ class AllTasksAdapter : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
     override fun getItemCount() = tasks.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.task_title_text)
-        val description: TextView = view.findViewById(R.id.task_desc_text)
+        private val title: TextView = view.findViewById(R.id.task_title_text)
+        private val description: TextView = view.findViewById(R.id.task_desc_text)
 
         fun bind(task: Task) {
             title.text = task.title

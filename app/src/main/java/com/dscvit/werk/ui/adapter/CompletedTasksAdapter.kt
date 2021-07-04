@@ -3,12 +3,18 @@ package com.dscvit.werk.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dscvit.werk.R
+import com.dscvit.werk.models.task.Task
 
 class CompletedTasksAdapter : RecyclerView.Adapter<CompletedTasksAdapter.ViewHolder>() {
+    private var tasks = mutableListOf<Task>()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {}
+    fun setTasks(tasks: List<Task>) {
+        this.tasks = tasks as MutableList<Task>
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -17,8 +23,20 @@ class CompletedTasksAdapter : RecyclerView.Adapter<CompletedTasksAdapter.ViewHol
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {}
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        viewHolder.bind(tasks[position])
+    }
 
-    override fun getItemCount() = 3
+    override fun getItemCount() = tasks.size
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val title: TextView = view.findViewById(R.id.task_title_text)
+        private val description: TextView = view.findViewById(R.id.task_desc_text)
+
+        fun bind(task: Task) {
+            title.text = task.title
+            description.text = task.description
+        }
+    }
 
 }

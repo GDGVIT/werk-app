@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TaskViewModel @ViewModelInject constructor(
     private val appRepository: AppRepository
@@ -36,10 +37,10 @@ class TaskViewModel @ViewModelInject constructor(
     val allTasks: LiveData<List<Task>> = _allTasks.asLiveData()
 
     private val _forYouTasks = MutableStateFlow<MutableList<Task>>(mutableListOf())
-    val forYouTasks: StateFlow<List<Task>> = _forYouTasks
+    val forYouTasks: LiveData<List<Task>> = _forYouTasks.asLiveData()
 
     private val _completedTasks = MutableStateFlow<MutableList<Task>>(mutableListOf())
-    val completedTasks: StateFlow<List<Task>> = _completedTasks
+    val completedTasks: LiveData<List<Task>> = _completedTasks.asLiveData()
 
     fun getTasks() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,7 +62,9 @@ class TaskViewModel @ViewModelInject constructor(
 
                     response.data?.tasks?.forEach {
                         // All Tasks
-                        _allTasks.value.add(it)
+                        withContext(Dispatchers.Main) {
+                            _allTasks.value.add(it)
+                        }
                     }
 
                     _tasks.value = GetTasksEvent.Success(response.data!!)

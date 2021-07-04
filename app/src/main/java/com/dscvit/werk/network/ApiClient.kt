@@ -39,4 +39,6 @@ class ApiClient @Inject constructor(
 
     suspend fun getTasks(sessionID: Int) = processResponse { api.getTasks(sessionID) }
 
+    suspend fun getParticipants(sessionID: Int) = processResponse { api.getParticipants(sessionID) }
+
 }

@@ -52,7 +52,7 @@ class UpcomingFragment : Fragment() {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
-                        viewModel.upcomingSessions.collect {
+                        viewModel.upcomingSessions.observe(viewLifecycleOwner, {
                             Log.d(TAG, "Upcoming Sessions: $it")
                             if (it.isEmpty()) {
                                 binding.emptyText.visibility = View.VISIBLE
@@ -62,7 +62,7 @@ class UpcomingFragment : Fragment() {
                                 adapter.updateSessions(it)
                                 binding.recyclerView.visibility = View.VISIBLE
                             }
-                        }
+                        })
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")

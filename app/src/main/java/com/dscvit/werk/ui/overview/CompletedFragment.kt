@@ -52,7 +52,7 @@ class CompletedFragment : Fragment() {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
-                        viewModel.completedSessions.collect {
+                        viewModel.completedSessions.observe(viewLifecycleOwner, {
                             Log.d(TAG, "Completed Sessions: $it")
                             if (it.isEmpty()) {
                                 binding.emptyText.visibility = View.VISIBLE
@@ -62,7 +62,7 @@ class CompletedFragment : Fragment() {
                                 adapter.updateSessions(it)
                                 binding.recyclerView.visibility = View.VISIBLE
                             }
-                        }
+                        })
                     }
                     is OverviewViewModel.GetSessionsEvent.Loading -> {
                         Log.d(TAG, "LOADING....")

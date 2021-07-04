@@ -1,6 +1,7 @@
 package com.dscvit.werk.network
 
 import com.dscvit.werk.models.auth.*
+import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.models.task.TaskRequest
 import com.dscvit.werk.models.task.TaskResponse
@@ -31,4 +32,7 @@ interface ApiInterface {
 
     @GET("/task/session/{sessionID}")
     suspend fun getTasks(@Path("sessionID") sessionID: Int): Response<TaskResponse>
+
+    @GET("/session/{sessionID}/participants")
+    suspend fun getParticipants(@Path("sessionID") sessionID: Int): Response<ParticipantsResponse>
 }

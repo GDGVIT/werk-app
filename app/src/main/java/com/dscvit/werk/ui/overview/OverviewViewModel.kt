@@ -2,7 +2,9 @@ package com.dscvit.werk.ui.overview
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.sessions.*
@@ -30,13 +32,13 @@ class OverviewViewModel @ViewModelInject constructor(
     val sessions: StateFlow<GetSessionsEvent> = _sessions
 
     private val _upcomingSession = MutableStateFlow<MutableList<Session>>(mutableListOf())
-    val upcomingSessions: StateFlow<List<Session>> = _upcomingSession
+    val upcomingSessions: LiveData<List<Session>> = _upcomingSession.asLiveData()
 
     private val _ongoingSession = MutableStateFlow<MutableList<Session>>(mutableListOf())
-    val ongoingSessions: StateFlow<List<Session>> = _ongoingSession
+    val ongoingSessions: LiveData<List<Session>> = _ongoingSession.asLiveData()
 
     private val _completedSession = MutableStateFlow<MutableList<Session>>(mutableListOf())
-    val completedSessions: StateFlow<List<Session>> = _completedSession
+    val completedSessions: LiveData<List<Session>> = _completedSession.asLiveData()
 
     fun getSessions() {
         viewModelScope.launch(Dispatchers.IO) {

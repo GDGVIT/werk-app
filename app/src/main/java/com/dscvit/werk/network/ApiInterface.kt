@@ -1,6 +1,7 @@
 package com.dscvit.werk.network
 
 import com.dscvit.werk.models.auth.*
+import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.models.task.CreateTaskRequest
@@ -40,4 +41,10 @@ interface ApiInterface {
 
     @POST("/task/create")
     suspend fun createTask(@Body createTaskRequest: CreateTaskRequest): Response<Task>
+
+    @POST("/task/{taskID}/assign")
+    suspend fun assignTask(
+        @Body assignRequest: AssignRequest,
+        @Path("taskID") taskID: Int
+    ): Response<Any>
 }

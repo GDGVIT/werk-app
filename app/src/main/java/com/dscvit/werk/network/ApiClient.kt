@@ -3,6 +3,7 @@ package com.dscvit.werk.network
 import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
+import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.JoinSessionRequest
 import com.dscvit.werk.models.task.CreateTaskRequest
@@ -44,6 +45,10 @@ class ApiClient @Inject constructor(
 
     suspend fun createTask(createTaskRequest: CreateTaskRequest) = processResponse {
         api.createTask(createTaskRequest)
+    }
+
+    suspend fun assignTask(assignRequest: AssignRequest, taskID: Int) = processResponse {
+        api.assignTask(assignRequest, taskID)
     }
 
 }

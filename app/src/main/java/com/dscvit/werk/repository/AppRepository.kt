@@ -1,6 +1,7 @@
 package com.dscvit.werk.repository
 
 import com.dscvit.werk.models.auth.*
+import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
 import com.dscvit.werk.models.task.CreateTaskRequest
@@ -27,6 +28,8 @@ interface AppRepository {
     suspend fun getParticipants(sessionID: Int): Resource<ParticipantsResponse>
 
     suspend fun  createTask(createTaskRequest: CreateTaskRequest): Resource<Task>
+
+    suspend fun assignTask(assignRequest: AssignRequest, taskID: Int): Resource<Any>
 
     fun saveJWTToken(token: String)
 

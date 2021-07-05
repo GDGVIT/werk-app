@@ -3,6 +3,8 @@ package com.dscvit.werk.network
 import com.dscvit.werk.models.auth.*
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
+import com.dscvit.werk.models.task.CreateTaskRequest
+import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.models.task.TaskRequest
 import com.dscvit.werk.models.task.TaskResponse
 import retrofit2.Response
@@ -35,4 +37,7 @@ interface ApiInterface {
 
     @GET("/session/{sessionID}/participants")
     suspend fun getParticipants(@Path("sessionID") sessionID: Int): Response<ParticipantsResponse>
+
+    @POST("/task/create")
+    suspend fun createTask(@Body createTaskRequest: CreateTaskRequest): Response<Task>
 }

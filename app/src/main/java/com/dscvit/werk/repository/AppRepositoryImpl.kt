@@ -4,6 +4,8 @@ import android.content.Context
 import com.dscvit.werk.models.auth.*
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
+import com.dscvit.werk.models.task.CreateTaskRequest
+import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.util.*
 import com.dscvit.werk.util.PrefHelper.get
@@ -36,6 +38,10 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun getTasks(sessionID: Int) = apiClient.getTasks(sessionID)
 
     override suspend fun getParticipants(sessionID: Int) = apiClient.getParticipants(sessionID)
+
+    override suspend fun createTask(createTaskRequest: CreateTaskRequest) = apiClient.createTask(
+        createTaskRequest
+    )
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

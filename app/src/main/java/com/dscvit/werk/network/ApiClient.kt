@@ -5,6 +5,7 @@ import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.JoinSessionRequest
+import com.dscvit.werk.models.task.CreateTaskRequest
 import com.dscvit.werk.models.task.TaskRequest
 import javax.inject.Inject
 
@@ -40,5 +41,9 @@ class ApiClient @Inject constructor(
     suspend fun getTasks(sessionID: Int) = processResponse { api.getTasks(sessionID) }
 
     suspend fun getParticipants(sessionID: Int) = processResponse { api.getParticipants(sessionID) }
+
+    suspend fun createTask(createTaskRequest: CreateTaskRequest) = processResponse {
+        api.createTask(createTaskRequest)
+    }
 
 }

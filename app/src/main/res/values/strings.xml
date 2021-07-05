@@ -72,4 +72,8 @@
     <string name="create_a_task">Create a Task</string>
     <string name="you">You</string>
     <string name="total_points">Total Points</string>
+    <string name="title">Title</string>
+    <string name="task_expected_duration_minutes">Task expected duration (minutes)</string>
+    <string name="points_for_this_task">Points for this task</string>
+    <string name="create">Create</string>
 </resources>

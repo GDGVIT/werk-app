@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dscvit.werk.models.auth.UserDetails
+import com.dscvit.werk.models.sessions.CreateSessionRequest
+import com.dscvit.werk.models.sessions.CreateSessionResponse
 import com.dscvit.werk.models.sessions.SessionDetails
+import com.dscvit.werk.models.task.CreateTaskRequest
 import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.repository.AppRepository
@@ -80,6 +83,30 @@ class TaskViewModel @ViewModelInject constructor(
 
                     _tasks.value = GetTasksEvent.Success(response.data!!)
                 }
+            }
+        }
+    }
+
+    sealed class CreateTaskEvent {
+        data class Success(val task: Task) : CreateTaskEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : CreateTaskEvent()
+        object Loading : CreateTaskEvent()
+        object Initial : CreateTaskEvent()
+    }
+
+    private val _createTask = MutableStateFlow<CreateTaskEvent>(CreateTaskEvent.Initial)
+    val createTask: StateFlow<CreateTaskEvent> = _createTask
+
+    fun createATask(createTaskRequest: CreateTaskRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _createTask.value = CreateTaskEvent.Loading
+
+            createTaskRequest.sessionId = appRepository.getSessionID()
+            when (val response = appRepository.createTask(createTaskRequest)) {
+                is Resource.Error -> _createTask.value =
+                    CreateTaskEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _createTask.value =
+                    CreateTaskEvent.Success(response.data!!)
             }
         }
     }

@@ -18,6 +18,10 @@ class MemberDialogAdapter : RecyclerView.Adapter<MemberDialogAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
+    fun getParticipants(position: Int): Participant {
+        return participants[position]
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.member_dialog_item, viewGroup, false)

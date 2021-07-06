@@ -24,10 +24,14 @@ import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.service.TimerService
 import com.dscvit.werk.ui.adapter.MemberDialogAdapter
 import com.dscvit.werk.ui.session.ParticipantsViewModel
+import com.dscvit.werk.ui.utils.OnItemClickListener
+import com.dscvit.werk.ui.utils.addOnItemClickListener
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.invoke
 
 @AndroidEntryPoint
 class TaskDescriptionActivity : AppCompatActivity() {
@@ -74,6 +78,8 @@ class TaskDescriptionActivity : AppCompatActivity() {
             finish()
         }
 
+        val loader = buildLoader()
+
         binding.changeAssignedButton.setOnClickListener {
             membersDialogBox = Dialog(this)
             membersDialogBox.setContentView(R.layout.member_dialog_box)
@@ -84,9 +90,47 @@ class TaskDescriptionActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = membersAdapter
 
-            val loader = buildLoader()
+            recyclerView.addOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClicked(position: Int, view: View) {
+                    val participant = membersAdapter.getParticipants(position)
+                    membersDialogBox.dismiss()
+                    viewModel.assignAParticipant(participant, task.taskId)
+                }
+            })
 
             viewModel.getParticipants()
+
+            lifecycleScope.launchWhenResumed {
+                viewModel.assignParticipant.collect { event ->
+                    when (event) {
+                        is ParticipantsViewModel.AssignParticipantEvent.Success -> {
+                            Log.d(TAG, "Sucesss...${event.participant}")
+
+                            binding.assignedPhoto.visibility = View.VISIBLE
+                            binding.assignedName.visibility = View.VISIBLE
+                            binding.assignedEmail.visibility = View.VISIBLE
+
+                            binding.assignedName.text = event.participant.name
+                            binding.assignedEmail.text = event.participant.email
+                            binding.assignedPhoto.load(event.participant.avatar)
+                            loader.hide()
+                        }
+                        is ParticipantsViewModel.AssignParticipantEvent.Loading -> {
+                            Log.d(TAG, "LOADING...")
+                            loader.show()
+                        }
+                        is ParticipantsViewModel.AssignParticipantEvent.Failure -> {
+                            Log.d(TAG, event.errorMessage)
+
+                            view.showErrorSnackBar(event.errorMessage)
+
+                            loader.hide()
+                        }
+                        else -> {
+                        }
+                    }
+                }
+            }
 
             lifecycleScope.launchWhenResumed {
                 viewModel.participants.collect { event ->

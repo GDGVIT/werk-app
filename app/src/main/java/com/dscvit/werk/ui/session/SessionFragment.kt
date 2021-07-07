@@ -42,7 +42,7 @@ class SessionFragment : Fragment() {
 
         val loader = requireContext().buildLoader()
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             viewModel.tasks.collect { event ->
                 when (event) {
                     is TaskViewModel.GetTasksEvent.Success -> {

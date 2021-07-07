@@ -1,5 +1,6 @@
 package com.dscvit.werk.ui.tasks
 
+import android.os.Build
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -16,9 +17,11 @@ import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
 import com.dscvit.werk.util.STATUS_COMPLETED
+import com.dscvit.werk.util.STATUS_TERMINATED
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
 
 class TaskViewModel @ViewModelInject constructor(
@@ -64,17 +67,17 @@ class TaskViewModel @ViewModelInject constructor(
                 is Resource.Success -> {
                     response.data?.tasks?.forEach {
                         // All Tasks
-                        if (it.status != STATUS_COMPLETED) {
+                        if (it.status != STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
                             _allTasks.value.add(it)
                         }
 
                         // Completed Tasks
-                        if (it.status == STATUS_COMPLETED) {
+                        if (it.status == STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
                             _completedTasks.value.add(it)
                         }
 
                         // For You Tasks
-                        if (it.status != STATUS_COMPLETED) {
+                        if (it.status != STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
                             if (it.assignedTo == userDetails.userId) {
                                 _forYouTasks.value.add(it)
                             }
@@ -82,6 +85,28 @@ class TaskViewModel @ViewModelInject constructor(
                     }
 
                     _tasks.value = GetTasksEvent.Success(response.data!!)
+                }
+            }
+        }
+    }
+
+    fun removeTask(taskID: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _allTasks.value.forEach {
+                if (it.taskId == taskID) {
+                    _allTasks.value.remove(it)
+                }
+            }
+
+            _forYouTasks.value.forEach {
+                if (it.taskId == taskID) {
+                    _forYouTasks.value.remove(it)
+                }
+            }
+
+            _completedTasks.value.forEach {
+                if (it.taskId == taskID) {
+                    _completedTasks.value.remove(it)
                 }
             }
         }
@@ -107,6 +132,29 @@ class TaskViewModel @ViewModelInject constructor(
                     CreateTaskEvent.Failure(response.message ?: "", response.statusCode ?: -1)
                 is Resource.Success -> _createTask.value =
                     CreateTaskEvent.Success(response.data!!)
+            }
+        }
+    }
+
+    sealed class ChangeStatusEvent {
+        object Success : ChangeStatusEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : ChangeStatusEvent()
+        object Loading : ChangeStatusEvent()
+        object Initial : ChangeStatusEvent()
+    }
+
+    private val _terminateTask = MutableStateFlow<ChangeStatusEvent>(ChangeStatusEvent.Initial)
+    val terminateTask: StateFlow<ChangeStatusEvent> = _terminateTask
+
+    fun terminateTheTask(taskID: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _terminateTask.value = ChangeStatusEvent.Loading
+
+            when (val response = appRepository.terminateTask(taskID)) {
+                is Resource.Error -> _terminateTask.value =
+                    ChangeStatusEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _terminateTask.value =
+                    ChangeStatusEvent.Success
             }
         }
     }

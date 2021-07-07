@@ -1,6 +1,7 @@
 package com.dscvit.werk.network
 
 import com.dscvit.werk.models.auth.*
+import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
@@ -47,4 +48,10 @@ interface ApiInterface {
         @Body assignRequest: AssignRequest,
         @Path("taskID") taskID: Int
     ): Response<Any>
+
+    @GET("/chats/{sessionID}")
+    suspend fun getChats(@Path("sessionID") sessionID: Int): Response<ChatResponse>
+
+    @POST("/task/{taskID}/terminate")
+    suspend fun terminateTask(@Path("taskID") taskID: Int): Response<Any>
 }

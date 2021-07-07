@@ -51,4 +51,12 @@ class ApiClient @Inject constructor(
         api.assignTask(assignRequest, taskID)
     }
 
+    suspend fun getChats(sessionID: Int) = processResponse {
+        api.getChats(sessionID)
+    }
+
+    suspend fun terminateTask(taskID: Int) = processResponse {
+        api.terminateTask(taskID)
+    }
+
 }

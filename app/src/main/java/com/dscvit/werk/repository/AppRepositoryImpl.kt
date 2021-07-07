@@ -2,6 +2,7 @@ package com.dscvit.werk.repository
 
 import android.content.Context
 import com.dscvit.werk.models.auth.*
+import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
@@ -44,9 +45,16 @@ class AppRepositoryImpl @Inject constructor(
         createTaskRequest
     )
 
-    override suspend fun assignTask(assignRequest: AssignRequest, taskID: Int) = apiClient.assignTask(
-        assignRequest, taskID
+    override suspend fun assignTask(assignRequest: AssignRequest, taskID: Int) =
+        apiClient.assignTask(
+            assignRequest, taskID
+        )
+
+    override suspend fun getChats(sessionID: Int) = apiClient.getChats(
+        sessionID
     )
+
+    override suspend fun terminateTask(taskID: Int) = apiClient.terminateTask(taskID)
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

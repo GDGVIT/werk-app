@@ -10,10 +10,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,11 +27,16 @@ import com.dscvit.werk.databinding.ActivityTaskDescriptionBinding
 import com.dscvit.werk.models.task.Task
 import com.dscvit.werk.service.TimerService
 import com.dscvit.werk.ui.adapter.MemberDialogAdapter
+import com.dscvit.werk.ui.overview.SessionsOverviewFragmentDirections
 import com.dscvit.werk.ui.session.ParticipantsViewModel
 import com.dscvit.werk.ui.utils.OnItemClickListener
 import com.dscvit.werk.ui.utils.addOnItemClickListener
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
+import com.dscvit.werk.util.APP_PREF
+import com.dscvit.werk.util.PREF_TOKEN
+import com.dscvit.werk.util.PrefHelper
+import com.dscvit.werk.util.PrefHelper.set
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -47,6 +56,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
     private var isTimerRunning = false
 
     private val viewModel: ParticipantsViewModel by viewModels()
+    private val taskViewModel: TaskViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +73,24 @@ class TaskDescriptionActivity : AppCompatActivity() {
         binding.descBody.text = task.description
 
         binding.descPoints.text = "Points: ${task.points}"
+
+        binding.moreOptionsMenu.setOnClickListener {
+            val popup = PopupMenu(this.baseContext, binding.moreOptionsMenu)
+            popup.menuInflater.inflate(R.menu.more_actions_task_menu, popup.menu)
+
+            popup.setOnMenuItemClickListener {
+                if (it.itemId == R.id.terminate_task) {
+                    taskViewModel.terminateTheTask(task.taskId)
+                    return@setOnMenuItemClickListener true
+                } else {
+                    Toast.makeText(this, it.itemId.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnMenuItemClickListener true
+                }
+            }
+
+            popup.show()
+        }
 
         if (task.assigned != null) {
             binding.assignedPhoto.load(task.assigned?.avatar)
@@ -155,6 +183,30 @@ class TaskDescriptionActivity : AppCompatActivity() {
                         }
                         else -> {
                         }
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            taskViewModel.terminateTask.collect { event ->
+                when (event) {
+                    is TaskViewModel.ChangeStatusEvent.Success -> {
+                        loader.hide()
+                        Log.d(TAG, "SUCCESS")
+                        taskViewModel.removeTask(task.taskId)
+                        finish()
+                    }
+                    is TaskViewModel.ChangeStatusEvent.Loading -> {
+                        Log.d(TAG, "LOADING...")
+                        loader.show()
+                    }
+                    is TaskViewModel.ChangeStatusEvent.Failure -> {
+                        loader.hide()
+                        Log.d(TAG, event.errorMessage)
+                        view.showErrorSnackBar(event.errorMessage)
+                    }
+                    else -> {
                     }
                 }
             }

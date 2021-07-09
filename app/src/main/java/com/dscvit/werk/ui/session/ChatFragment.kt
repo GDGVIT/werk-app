@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentChatBinding
-import com.dscvit.werk.models.chat.ChatMessage
-import com.dscvit.werk.models.chat.InitializeRequest
-import com.dscvit.werk.models.chat.JoinSessionRequest
-import com.dscvit.werk.models.chat.Message
+import com.dscvit.werk.models.chat.*
+import com.dscvit.werk.ui.adapter.ChatsAdapter
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.runOnUiThread
 import com.dscvit.werk.ui.utils.showErrorSnackBar
@@ -47,6 +46,12 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = ChatsAdapter()
+        val llManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        llManager.stackFromEnd = true
+        binding.chatRecyclerView.adapter = adapter
+        binding.chatRecyclerView.layoutManager = llManager
+
         binding.sendButton.setOnClickListener {
             if (binding.chatInput.editText!!.text.isNotEmpty()) {
                 // Send message
@@ -56,6 +61,25 @@ class ChatFragment : Fragment() {
                 Log.d(TAG, messageObj.toString())
                 socket.emit("message", messageObj)
 
+                val user = viewModel.getUserDetails()
+                val message = Message(
+                    message = binding.chatInput.editText!!.text.toString().trim(),
+                    sender = true,
+                    messageId = 0,
+                    sentBy = SentBy(
+                        avatar = user.avatar,
+                        createdAt = "",
+                        email = user.email,
+                        name = user.name,
+                        updatedAt = "",
+                        userId = 0
+                    ),
+                    sentTime = 0
+                )
+
+                adapter.appendMessage(message)
+                binding.chatRecyclerView.scrollToPosition(adapter.messageList.size - 1)
+
                 binding.chatInput.editText!!.setText("")
             }
         }
@@ -64,6 +88,11 @@ class ChatFragment : Fragment() {
             val jsonString = it[0].toString()
             val message = gson.fromJson(jsonString, Message::class.java)
             Log.d(TAG, "Message: $message")
+
+            runOnUiThread {
+                adapter.appendMessage(message)
+                binding.chatRecyclerView.scrollToPosition(adapter.messageList.size - 1)
+            }
         }
 
         val loader = requireContext().buildLoader()
@@ -77,6 +106,10 @@ class ChatFragment : Fragment() {
                             if (it.isEmpty()) {
                                 binding.chatRecyclerView.visibility = View.GONE
                                 binding.emptyText.visibility = View.VISIBLE
+                            } else {
+                                adapter.setMessages(event.chatResponse.oldMessages)
+                                binding.chatRecyclerView.visibility = View.VISIBLE
+                                binding.emptyText.visibility = View.GONE
                             }
                         })
 

@@ -2,6 +2,7 @@ package com.dscvit.werk.ui.session
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.chat.Message
 import com.dscvit.werk.models.participants.ParticipantsResponse
@@ -34,6 +35,10 @@ class ChatViewModel @ViewModelInject constructor(
 
     fun getSessionID(): Int {
         return appRepository.getSessionID()
+    }
+
+    fun getUserDetails(): UserDetails {
+        return appRepository.getUserDetails()
     }
 
     fun getChats() {

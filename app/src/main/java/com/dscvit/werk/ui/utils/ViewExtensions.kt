@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.dscvit.werk.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -44,4 +45,10 @@ fun Context.buildLoader(): androidx.appcompat.app.AlertDialog {
     dialog.setView(R.layout.loading_layout)
 
     return dialog.create()
+}
+
+fun Fragment?.runOnUiThread(action: () -> Unit) {
+    this ?: return
+    if (!isAdded) return // Fragment not attached to an Activity
+    activity?.runOnUiThread(action)
 }

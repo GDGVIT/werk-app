@@ -7,15 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentChatBinding
-import com.dscvit.werk.databinding.FragmentSessionBinding
-import com.dscvit.werk.ui.tasks.TaskViewModel
+import com.dscvit.werk.models.chat.ChatMessage
+import com.dscvit.werk.models.chat.InitializeRequest
+import com.dscvit.werk.models.chat.JoinSessionRequest
+import com.dscvit.werk.models.chat.Message
 import com.dscvit.werk.ui.utils.buildLoader
+import com.dscvit.werk.ui.utils.runOnUiThread
 import com.dscvit.werk.ui.utils.showErrorSnackBar
+import com.google.gson.Gson
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 
 class ChatFragment : Fragment() {
     private val TAG: String = this.javaClass.simpleName
@@ -24,6 +32,9 @@ class ChatFragment : Fragment() {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
+
+    val gson = Gson()
+    val socket: Socket = IO.socket("https://infinite-eyrie-56387.herokuapp.com")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +48,22 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.sendButton.setOnClickListener {
-            binding.chatInput.editText!!.setText("")
+            if (binding.chatInput.editText!!.text.isNotEmpty()) {
+                // Send message
+                val messageRequest =
+                    ChatMessage(binding.chatInput.editText!!.text.toString().trim(), "")
+                val messageObj = JSONObject(gson.toJson(messageRequest))
+                Log.d(TAG, messageObj.toString())
+                socket.emit("message", messageObj)
+
+                binding.chatInput.editText!!.setText("")
+            }
+        }
+
+        val onMessage = Emitter.Listener {
+            val jsonString = it[0].toString()
+            val message = gson.fromJson(jsonString, Message::class.java)
+            Log.d(TAG, "Message: $message")
         }
 
         val loader = requireContext().buildLoader()
@@ -53,7 +79,37 @@ class ChatFragment : Fragment() {
                                 binding.emptyText.visibility = View.VISIBLE
                             }
                         })
-                        loader.hide()
+
+                        // Handle Socket Connection
+                        socket.connect().let {
+                            it.on(Socket.EVENT_CONNECT) {
+                                Log.d(TAG, "Socket connected!!!!!")
+
+                                // Handle initialise Connection
+                                val initializeRequest = InitializeRequest(viewModel.getUserToken())
+                                val initializeObj = JSONObject(gson.toJson(initializeRequest))
+                                Log.d(TAG, initializeObj.toString())
+                                socket.emit("initialize", initializeObj)
+
+                                Log.d(TAG, "START SESSION REQUEST")
+
+                                // Handle joinSession Connection
+                                val joinSessionRequest =
+                                    JoinSessionRequest(viewModel.getSessionID())
+                                val joinSessionObj = JSONObject(gson.toJson(joinSessionRequest))
+                                Log.d(TAG, joinSessionObj.toString())
+                                socket.emit("joinSession", joinSessionObj)
+
+                                runOnUiThread { loader.hide() }
+                            }
+                            it.on(Socket.EVENT_CONNECT_ERROR) {
+                                Log.d(TAG, "Socket connection error!!!!!")
+                                runOnUiThread { loader.hide() }
+                            }
+                        }
+
+                        // Handle Incoming chat messages
+                        socket.on("message", onMessage)
                     }
                     is ChatViewModel.GetChatsEvent.Loading -> {
                         Log.d(TAG, "LOADING CHATS....")
@@ -71,5 +127,11 @@ class ChatFragment : Fragment() {
         }
 
         viewModel.getChats()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        socket.emit("leaveSession")
+        socket.disconnect()
     }
 }

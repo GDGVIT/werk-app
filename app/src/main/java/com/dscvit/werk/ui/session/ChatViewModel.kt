@@ -28,6 +28,14 @@ class ChatViewModel @ViewModelInject constructor(
     private val _chatMessages = MutableStateFlow<MutableList<Message>>(mutableListOf())
     val chatMessages: LiveData<List<Message>> = _chatMessages.asLiveData()
 
+    fun getUserToken(): String {
+        return appRepository.getJWTToken()
+    }
+
+    fun getSessionID(): Int {
+        return appRepository.getSessionID()
+    }
+
     fun getChats() {
         viewModelScope.launch(Dispatchers.IO) {
             _chats.value = GetChatsEvent.Loading

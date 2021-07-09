@@ -103,4 +103,7 @@ dependencies {
 
     // Coil for network images
     implementation("io.coil-kt:coil:1.2.2")
+
+    // Socket IO Client
+    implementation('io.socket:socket.io-client:2.0.0')
 }

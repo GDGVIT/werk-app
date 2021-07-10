@@ -24,6 +24,8 @@ interface AppRepository {
 
     suspend fun sendVerificationEmail(sendVerificationRequest: SendVerificationRequest): Resource<Any>
 
+    suspend fun resetPassword(sendVerificationRequest: SendVerificationRequest): Resource<Any>
+
     suspend fun getTasks(sessionID: Int): Resource<TaskResponse>
 
     suspend fun getParticipants(sessionID: Int): Resource<ParticipantsResponse>

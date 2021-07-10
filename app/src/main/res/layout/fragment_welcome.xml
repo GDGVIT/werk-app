@@ -59,7 +59,7 @@
                 android:padding="16dp"
                 app:icon="@drawable/ic_google_icon"
                 app:iconSize="16dp"
-                android:text="@string/sign_up_google" />
+                android:text="@string/sign_in_google" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/email_sign_up_button"

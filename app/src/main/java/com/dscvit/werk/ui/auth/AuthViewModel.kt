@@ -69,4 +69,11 @@ class AuthViewModel @ViewModelInject constructor(
             repository.sendVerificationEmail(sendVerificationRequest)
         }
     }
+
+    fun resetPassword(email: String) {
+        val sendVerificationRequest = SendVerificationRequest(email)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.resetPassword(sendVerificationRequest)
+        }
+    }
 }

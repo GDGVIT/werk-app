@@ -37,6 +37,9 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun sendVerificationEmail(sendVerificationRequest: SendVerificationRequest) =
         apiClient.sendVerificationEmail(sendVerificationRequest)
 
+    override suspend fun resetPassword(sendVerificationRequest: SendVerificationRequest) =
+        apiClient.resetPassword(sendVerificationRequest)
+
     override suspend fun getTasks(sessionID: Int) = apiClient.getTasks(sessionID)
 
     override suspend fun getParticipants(sessionID: Int) = apiClient.getParticipants(sessionID)

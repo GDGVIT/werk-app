@@ -34,6 +34,9 @@ interface ApiInterface {
     @POST("/auth/verifyEmail")
     suspend fun sendVerificationEmail(@Body sendVerificationRequest: SendVerificationRequest): Response<Any>
 
+    @POST("/auth/resetPassword")
+    suspend fun resetPassword(@Body sendVerificationRequest: SendVerificationRequest): Response<Any>
+
     @GET("/task/session/{sessionID}")
     suspend fun getTasks(@Path("sessionID") sessionID: Int): Response<TaskResponse>
 

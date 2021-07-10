@@ -2,10 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.auth.SignInFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    tools:context=".ui.auth.SignInFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,9 +24,9 @@
             android:layout_height="80dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="24dp"
-            android:transitionName="logo_small"
             android:contentDescription="@string/logo"
             android:src="@drawable/logo"
+            android:transitionName="logo_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,6 +108,18 @@
                     android:layout_marginTop="24dp"
                     android:padding="16dp"
                     android:text="@string/sign_in" />
+
+                <TextView
+                    android:id="@+id/forgot_password_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="48dp"
+                    android:padding="4dp"
+                    android:text="@string/forgot_password"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -115,9 +127,9 @@
         <View
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/details_content"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

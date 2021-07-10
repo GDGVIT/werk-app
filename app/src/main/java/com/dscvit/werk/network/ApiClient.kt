@@ -39,6 +39,11 @@ class ApiClient @Inject constructor(
             api.sendVerificationEmail(sendVerificationRequest)
         }
 
+    suspend fun resetPassword(sendVerificationRequest: SendVerificationRequest) =
+        processResponse {
+            api.resetPassword(sendVerificationRequest)
+        }
+
     suspend fun getTasks(sessionID: Int) = processResponse { api.getTasks(sessionID) }
 
     suspend fun getParticipants(sessionID: Int) = processResponse { api.getParticipants(sessionID) }

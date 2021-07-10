@@ -17,7 +17,9 @@ import com.dscvit.werk.ui.utils.afterTextChanged
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.ui.utils.showErrorSnackBar
 import com.dscvit.werk.ui.utils.showSuccessSnackBar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -82,6 +84,46 @@ class SignInFragment : Fragment() {
                     binding.passwordInput.editText?.text.toString(),
                 )
                 email = binding.emailInput.editText?.text.toString()
+            }
+        }
+
+        binding.forgotPasswordText.setOnClickListener {
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+
+            dialog.setCancelable(true)
+            dialog.setView(R.layout.email_input_layout)
+            val emailInputDialog = dialog.create()
+
+            emailInputDialog.show()
+
+            var isDialogEmailValid = false
+            val emailInput: TextInputLayout? =
+                emailInputDialog.findViewById(R.id.dialog_email_input)
+            emailInput?.editText?.afterTextChanged {
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) {
+                    emailInput.error = null
+                    isDialogEmailValid = true
+                } else {
+                    emailInput.error = "Enter a valid email"
+                    isDialogEmailValid = false
+                }
+            }
+
+            val submitButton: MaterialButton? = emailInputDialog.findViewById(R.id.submit_button)
+            submitButton?.setOnClickListener {
+                if (isDialogEmailValid) {
+                    val email = emailInput?.editText?.text.toString().trim()
+                    viewModel.resetPassword(email)
+                    emailInputDialog.dismiss()
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Password Reset")
+                        .setMessage("We have sent you an email with the steps to reset your password 😊")
+                        .setPositiveButton("Cool") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
             }
         }
 

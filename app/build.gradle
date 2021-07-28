@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -37,6 +38,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+configurations {
+    all {
+        exclude group: 'org.json', module: 'json'
     }
 }
 
@@ -106,4 +113,10 @@ dependencies {
 
     // Socket IO Client
     implementation('io.socket:socket.io-client:2.0.0')
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 }

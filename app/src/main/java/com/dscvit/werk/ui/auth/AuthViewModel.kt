@@ -3,6 +3,7 @@ package com.dscvit.werk.ui.auth
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dscvit.werk.models.auth.GoogleSignInRequest
 import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
@@ -58,6 +59,26 @@ class AuthViewModel @ViewModelInject constructor(
                     repository.saveJWTToken(response.data!!.token)
                     repository.saveUserDetails(response.data.userDetails)
                     _signInUser.value = AuthEvent.Success
+                }
+            }
+        }
+    }
+
+    private val _googleSignInUser = MutableStateFlow<AuthEvent>(AuthEvent.Initial)
+    val googleSignInUser: StateFlow<AuthEvent> = _googleSignInUser
+
+    fun initGoogleSignIn(idToken: String) {
+        val googleSignInRequest = GoogleSignInRequest(idToken)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _googleSignInUser.value = AuthEvent.Loading
+            when (val response = repository.googleSignIn(googleSignInRequest)) {
+                is Resource.Error -> _googleSignInUser.value =
+                    AuthEvent.Failure(response.message!!, response.statusCode ?: -1)
+                is Resource.Success -> {
+                    repository.saveJWTToken(response.data!!.token)
+                    repository.saveUserDetails(response.data.userDetails)
+                    _googleSignInUser.value = AuthEvent.Success
                 }
             }
         }

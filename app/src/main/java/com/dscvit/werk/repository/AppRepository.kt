@@ -16,6 +16,8 @@ interface AppRepository {
 
     suspend fun signInUser(signInRequest: SignInRequest): Resource<SignInResponse>
 
+    suspend fun googleSignIn(googleSignInRequest: GoogleSignInRequest): Resource<SignInResponse>
+
     suspend fun getSessions(): Resource<SessionsResponse>
 
     suspend fun createSession(createSessionRequest: CreateSessionRequest): Resource<CreateSessionResponse>

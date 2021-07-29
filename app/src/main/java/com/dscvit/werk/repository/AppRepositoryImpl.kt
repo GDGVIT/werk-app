@@ -26,6 +26,9 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun signInUser(signInRequest: SignInRequest) =
         apiClient.signInUser(signInRequest)
 
+    override suspend fun googleSignIn(googleSignInRequest: GoogleSignInRequest) =
+        apiClient.googleSignIn(googleSignInRequest)
+
     override suspend fun getSessions() = apiClient.getSessions()
 
     override suspend fun createSession(createSessionRequest: CreateSessionRequest) =

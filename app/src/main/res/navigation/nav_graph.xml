@@ -24,6 +24,15 @@
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_sessionsOverviewFragment"
+            app:destination="@id/sessionsOverviewFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_open_exit"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -91,7 +100,7 @@
         android:id="@+id/joinSessionFragment"
         android:name="com.dscvit.werk.ui.overview.JoinSessionFragment"
         android:label="fragment_join_session"
-        tools:layout="@layout/fragment_join_session"/>
+        tools:layout="@layout/fragment_join_session" />
     <fragment
         android:id="@+id/createSessionFragment"
         android:name="com.dscvit.werk.ui.overview.CreateSessionFragment"

@@ -8,10 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentWelcomeBinding
+import com.dscvit.werk.ui.utils.buildLoader
+import com.dscvit.werk.ui.utils.showErrorSnackBar
+import com.dscvit.werk.ui.utils.showSuccessSnackBar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,14 +28,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
-
+@AndroidEntryPoint
 class WelcomeFragment : Fragment() {
     companion object {
         private const val RC_SIGN_IN = 9001
     }
 
     private val TAG: String = this.javaClass.simpleName
+
+    private val viewModel: AuthViewModel by activityViewModels()
 
     private var _binding: FragmentWelcomeBinding? = null
     private val binding get() = _binding!!
@@ -78,6 +88,37 @@ class WelcomeFragment : Fragment() {
                 extras
             )
         }
+
+        val loader = requireContext().buildLoader()
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.googleSignInUser.collect { event ->
+                when (event) {
+                    is AuthViewModel.AuthEvent.Success -> {
+                        view.showSuccessSnackBar("Sign in successful! :)")
+                        loader.hide()
+
+                        findNavController().navigate(
+                            R.id.action_welcomeFragment_to_sessionsOverviewFragment,
+                            null,
+                            null
+                        )
+                    }
+                    is AuthViewModel.AuthEvent.Failure -> {
+                        Log.d(TAG, event.errorMessage + event.statusCode)
+                        view.showErrorSnackBar(event.errorMessage)
+
+                        loader.hide()
+                    }
+                    AuthViewModel.AuthEvent.Loading -> {
+                        Log.d(TAG, "SIGN IN IN PROGRESS...")
+                        loader.show()
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,6 +149,7 @@ class WelcomeFragment : Fragment() {
                                 idToken = it.result?.token ?: ""
                                 Log.d(TAG, idToken)
                                 // Send token to your backend
+                                viewModel.initGoogleSignIn(idToken)
                             } else {
                                 Toast.makeText(
                                     requireContext(),

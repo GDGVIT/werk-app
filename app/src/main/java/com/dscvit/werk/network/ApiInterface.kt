@@ -22,6 +22,9 @@ interface ApiInterface {
     @POST("/auth/login")
     suspend fun signInUser(@Body signInRequest: SignInRequest): Response<SignInResponse>
 
+    @POST("/auth/google")
+    suspend fun googleSignIn(@Body googleSignInRequest: GoogleSignInRequest): Response<SignInResponse>
+
     @GET("/session")
     suspend fun getSessions(): Response<SessionsResponse>
 

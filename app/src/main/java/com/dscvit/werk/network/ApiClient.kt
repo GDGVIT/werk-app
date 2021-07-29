@@ -1,5 +1,6 @@
 package com.dscvit.werk.network
 
+import com.dscvit.werk.models.auth.GoogleSignInRequest
 import com.dscvit.werk.models.auth.SendVerificationRequest
 import com.dscvit.werk.models.auth.SignInRequest
 import com.dscvit.werk.models.auth.SignUpRequest
@@ -20,6 +21,10 @@ class ApiClient @Inject constructor(
 
     suspend fun signInUser(signInRequest: SignInRequest) = processResponse {
         api.signInUser(signInRequest)
+    }
+
+    suspend fun googleSignIn(googleSignInRequest: GoogleSignInRequest) = processResponse {
+        api.googleSignIn(googleSignInRequest)
     }
 
     suspend fun getSessions() = processResponse {

@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.dscvit.werk.R
 import java.util.*
 import kotlin.collections.HashMap
@@ -18,6 +19,7 @@ class TimerService : Service() {
         const val CHANNEL_ID = "Werk_Timer_Notifications"
         const val START = "Start"
         const val PAUSE = "Pause"
+        const val DONE = "Done"
         const val GET_STATUS = "Get_Status"
     }
 
@@ -41,6 +43,7 @@ class TimerService : Service() {
         when (intent.getStringExtra("Action")!!) {
             START -> startTimer(taskID)
             PAUSE -> pauseTimer(taskID)
+            DONE -> finishTask(taskID)
             GET_STATUS -> sendStatus(taskID)
         }
 
@@ -79,6 +82,12 @@ class TimerService : Service() {
         isTimerRunning[taskID] = false
         sendStatus(taskID)
         showNotification(taskID)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun finishTask(taskID: Int) {
+        Log.d("Timer", "Done called")
+        getSystemService(NotificationManager::class.java).cancel(taskID)
     }
 
     private fun sendStatus(taskID: Int) {

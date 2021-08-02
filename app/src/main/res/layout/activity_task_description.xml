@@ -118,15 +118,22 @@
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
+                    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                         android:id="@+id/toggle_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="4dp"
-                        android:text="@string/start" />
+                        android:background="@drawable/primary_button_bg"
+                        android:text="@string/start"
+                        app:finalCornerAngle="8dp"
+                        app:initialCornerAngle="8dp"
+                        app:spinning_bar_color="@color/white"
+                        app:spinning_bar_padding="6dp"
+                        app:spinning_bar_width="4dp" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/done_button"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

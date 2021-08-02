@@ -5,10 +5,7 @@ import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
-import com.dscvit.werk.models.task.CreateTaskRequest
-import com.dscvit.werk.models.task.Task
-import com.dscvit.werk.models.task.TaskRequest
-import com.dscvit.werk.models.task.TaskResponse
+import com.dscvit.werk.models.task.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -60,4 +57,20 @@ interface ApiInterface {
 
     @POST("/task/{taskID}/terminate")
     suspend fun terminateTask(@Path("taskID") taskID: Int): Response<Any>
+
+    @POST("/task/{taskID}/changeStatus")
+    suspend fun changeTaskStatus(
+        @Path("taskID") taskID: Int,
+        @Body changeStatusRequest: ChangeStatusRequest
+    ): Response<Any>
+
+    @POST("/task/{taskID}/submit")
+    suspend fun submitTask(
+        @Path("taskID") taskID: Int,
+        @Body submitRequest: SubmitRequest
+    ): Response<Any>
+
+    @GET("/task/details/{taskID}")
+
+    suspend fun getTaskDetails(@Path("taskID") taskID: Int): Response<TaskDetailsResponse>
 }

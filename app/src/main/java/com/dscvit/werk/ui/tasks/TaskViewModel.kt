@@ -13,6 +13,7 @@ import com.dscvit.werk.models.sessions.CreateSessionResponse
 import com.dscvit.werk.models.sessions.SessionDetails
 import com.dscvit.werk.models.task.CreateTaskRequest
 import com.dscvit.werk.models.task.Task
+import com.dscvit.werk.models.task.TaskDetailsResponse
 import com.dscvit.werk.models.task.TaskResponse
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
@@ -155,6 +156,29 @@ class TaskViewModel @ViewModelInject constructor(
                     ChangeStatusEvent.Failure(response.message ?: "", response.statusCode ?: -1)
                 is Resource.Success -> _terminateTask.value =
                     ChangeStatusEvent.Success
+            }
+        }
+    }
+
+    sealed class GetTaskDetailsEvent {
+        data class Success(val taskDetailsResponse: TaskDetailsResponse) : GetTaskDetailsEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : GetTaskDetailsEvent()
+        object Loading : GetTaskDetailsEvent()
+        object Initial : GetTaskDetailsEvent()
+    }
+
+    private val _taskDetails = MutableStateFlow<GetTaskDetailsEvent>(GetTaskDetailsEvent.Initial)
+    val taskDetails: StateFlow<GetTaskDetailsEvent> = _taskDetails
+
+    fun getTaskDetails(taskID: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _taskDetails.value = GetTaskDetailsEvent.Loading
+
+            when (val response = appRepository.getTaskDetails(taskID)) {
+                is Resource.Error -> _taskDetails.value =
+                    GetTaskDetailsEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _taskDetails.value =
+                    GetTaskDetailsEvent.Success(response.data!!)
             }
         }
     }

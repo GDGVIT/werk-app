@@ -6,8 +6,7 @@ import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
-import com.dscvit.werk.models.task.CreateTaskRequest
-import com.dscvit.werk.models.task.Task
+import com.dscvit.werk.models.task.*
 import com.dscvit.werk.network.ApiClient
 import com.dscvit.werk.util.*
 import com.dscvit.werk.util.PrefHelper.get
@@ -61,6 +60,16 @@ class AppRepositoryImpl @Inject constructor(
     )
 
     override suspend fun terminateTask(taskID: Int) = apiClient.terminateTask(taskID)
+
+    override suspend fun changeTaskStatus(
+        taskID: Int,
+        changeStatusRequest: ChangeStatusRequest
+    ) = apiClient.changeTaskStatus(taskID, changeStatusRequest)
+
+    override suspend fun submitTask(taskID: Int, submitRequest: SubmitRequest) =
+        apiClient.submitTask(taskID, submitRequest)
+
+    override suspend fun getTaskDetails(taskID: Int) = apiClient.getTaskDetails(taskID)
 
     override fun saveJWTToken(token: String) {
         val sharedPrefs = PrefHelper.customPrefs(context, APP_PREF)

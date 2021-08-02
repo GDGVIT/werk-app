@@ -38,9 +38,8 @@ import com.dscvit.werk.util.PREF_TOKEN
 import com.dscvit.werk.util.PrefHelper
 import com.dscvit.werk.util.PrefHelper.set
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.invoke
 
 @AndroidEntryPoint
 class TaskDescriptionActivity : AppCompatActivity() {
@@ -68,6 +67,8 @@ class TaskDescriptionActivity : AppCompatActivity() {
         task = navArgs.task
 
         getTimerStatus(task.taskId, task.title)
+
+        taskViewModel.getTaskDetails(task.taskId)
 
         binding.appBarTitle.text = task.title
         binding.descBody.text = task.description
@@ -212,11 +213,45 @@ class TaskDescriptionActivity : AppCompatActivity() {
             }
         }
 
+        lifecycleScope.launchWhenCreated {
+            taskViewModel.taskDetails.collect { event ->
+                when (event) {
+                    is TaskViewModel.GetTaskDetailsEvent.Success -> {
+                        loader.hide()
+                        binding.timerText.text = event.taskDetailsResponse.elapsedSecs.toString()
+                        Log.d(TAG, "SUCCESS")
+                    }
+                    is TaskViewModel.GetTaskDetailsEvent.Loading -> {
+                        Log.d(TAG, "LOADING...")
+                        loader.show()
+                    }
+                    is TaskViewModel.GetTaskDetailsEvent.Failure -> {
+                        loader.hide()
+                        Log.d(TAG, event.errorMessage)
+                        view.showErrorSnackBar(event.errorMessage)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+
         binding.toggleButton.setOnClickListener {
-            if (isTimerRunning) pauseTimer(task.taskId, task.title) else startTimer(
-                task.taskId,
-                task.title
-            )
+            lifecycleScope.launch(Dispatchers.Main) {
+                binding.toggleButton.startAnimation()
+                delay(2000)
+                binding.toggleButton.revertAnimation {
+                    if (isTimerRunning) pauseTimer(task.taskId, task.title) else startTimer(
+                        task.taskId,
+                        task.title
+                    )
+                }
+
+            }
+        }
+
+        binding.doneButton.setOnClickListener {
+            finishTask(task.taskId, task.title)
         }
     }
 
@@ -272,6 +307,14 @@ class TaskDescriptionActivity : AppCompatActivity() {
         timerService.putExtra("TaskID", taskID)
         timerService.putExtra("TaskName", taskName)
         timerService.putExtra("Action", TimerService.PAUSE)
+        startService(timerService)
+    }
+
+    private fun finishTask(taskID: Int, taskName: String) {
+        val timerService = Intent(this, TimerService::class.java)
+        timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("TaskName", taskName)
+        timerService.putExtra("Action", TimerService.DONE)
         startService(timerService)
     }
 

@@ -5,10 +5,7 @@ import com.dscvit.werk.models.chat.ChatResponse
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.participants.ParticipantsResponse
 import com.dscvit.werk.models.sessions.*
-import com.dscvit.werk.models.task.CreateTaskRequest
-import com.dscvit.werk.models.task.Task
-import com.dscvit.werk.models.task.TaskRequest
-import com.dscvit.werk.models.task.TaskResponse
+import com.dscvit.werk.models.task.*
 import com.dscvit.werk.util.Resource
 
 interface AppRepository {
@@ -39,6 +36,15 @@ interface AppRepository {
     suspend fun getChats(sessionID: Int): Resource<ChatResponse>
 
     suspend fun terminateTask(taskID: Int): Resource<Any>
+
+    suspend fun changeTaskStatus(
+        taskID: Int,
+        changeStatusRequest: ChangeStatusRequest
+    ): Resource<Any>
+
+    suspend fun submitTask(taskID: Int, submitRequest: SubmitRequest): Resource<Any>
+
+    suspend fun getTaskDetails(taskID: Int): Resource<TaskDetailsResponse>
 
     fun saveJWTToken(token: String)
 

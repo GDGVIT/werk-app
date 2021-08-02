@@ -7,7 +7,9 @@ import com.dscvit.werk.models.auth.SignUpRequest
 import com.dscvit.werk.models.participants.AssignRequest
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.JoinSessionRequest
+import com.dscvit.werk.models.task.ChangeStatusRequest
 import com.dscvit.werk.models.task.CreateTaskRequest
+import com.dscvit.werk.models.task.SubmitRequest
 import com.dscvit.werk.models.task.TaskRequest
 import javax.inject.Inject
 
@@ -69,4 +71,16 @@ class ApiClient @Inject constructor(
         api.terminateTask(taskID)
     }
 
+    suspend fun changeTaskStatus(taskID: Int, changeStatusRequest: ChangeStatusRequest) =
+        processResponse {
+            api.changeTaskStatus(taskID, changeStatusRequest)
+        }
+
+    suspend fun submitTask(taskID: Int, submitRequest: SubmitRequest) =
+        processResponse {
+            api.submitTask(taskID, submitRequest)
+        }
+
+
+    suspend fun getTaskDetails(taskID: Int) = processResponse { api.getTaskDetails(taskID) }
 }

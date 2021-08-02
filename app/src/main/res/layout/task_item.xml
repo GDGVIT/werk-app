@@ -26,12 +26,22 @@
             android:id="@+id/task_time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5 min elapsed"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:text="@string/expected_duration"
             android:textColor="@color/white"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/task_expected_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 mins"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/task_time_text" />
 
         <TextView
             android:id="@+id/task_desc_text"
@@ -41,7 +51,7 @@
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit hey there."
             android:textColor="@color/light_gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/task_title_text" />
+            app:layout_constraintTop_toBottomOf="@id/task_expected_time" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/assigned_photo"

@@ -36,10 +36,12 @@ class ForYouTasksAdapter : RecyclerView.Adapter<ForYouTasksAdapter.ViewHolder>()
         private val title: TextView = view.findViewById(R.id.task_title_text)
         private val description: TextView = view.findViewById(R.id.task_desc_text)
         private val assignedPhoto: CircleImageView = view.findViewById(R.id.assigned_photo)
+        private val taskExpectedTime: TextView = view.findViewById(R.id.task_expected_time)
 
         fun bind(task: Task) {
             title.text = task.title
             description.text = task.description
+            taskExpectedTime.text = "${task.expectedDuration} mins"
             if (task.assigned != null) {
                 assignedPhoto.visibility = View.VISIBLE
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

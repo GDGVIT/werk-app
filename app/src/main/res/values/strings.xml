@@ -84,4 +84,5 @@
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="email_to_registered_email">Enter your registered email on which you wish to receive the link to reset password!</string>
     <string name="submit">Submit</string>
+    <string name="expected_duration">Expected Duration</string>
 </resources>

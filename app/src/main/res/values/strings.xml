@@ -79,7 +79,7 @@
     <string name="start_typing">Start typing...</string>
     <string name="message">Message</string>
     <string name="be_the_first_one_to_message">Be the first one to message 😉</string>
-    <string name="terminate_task">Terminate Task</string>
+    <string name="terminate_task">Delete Task</string>
     <string name="more_options">More options</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="email_to_registered_email">Enter your registered email on which you wish to receive the link to reset password!</string>

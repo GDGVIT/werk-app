@@ -99,6 +99,13 @@ class TimerService : Service() {
             sendStatus(taskID)
         }
         showNotification(taskID, true)
+        var areAllTimersDone = true
+        for ((_, v) in isTimerRunning) {
+            if (v) areAllTimersDone = false
+            Log.d("TimerService", "Done: $v")
+        }
+        Log.d("TimerService", "AreAllTimerDone: $areAllTimersDone")
+        if (areAllTimersDone) stopForeground(true)
     }
 
     private fun sendStatus(taskID: Int) {

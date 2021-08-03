@@ -29,7 +29,7 @@ data class TaskDetailsResponse(
     @SerializedName("points")
     val points: Int,
     @SerializedName("startedTime")
-    val startedTime: Int,
+    val startedTime: Long,
     @SerializedName("status")
     val status: String,
     @SerializedName("submittedDate")

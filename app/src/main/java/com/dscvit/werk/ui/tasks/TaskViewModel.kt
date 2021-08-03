@@ -11,10 +11,7 @@ import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.CreateSessionResponse
 import com.dscvit.werk.models.sessions.SessionDetails
-import com.dscvit.werk.models.task.CreateTaskRequest
-import com.dscvit.werk.models.task.Task
-import com.dscvit.werk.models.task.TaskDetailsResponse
-import com.dscvit.werk.models.task.TaskResponse
+import com.dscvit.werk.models.task.*
 import com.dscvit.werk.repository.AppRepository
 import com.dscvit.werk.util.Resource
 import com.dscvit.werk.util.STATUS_COMPLETED
@@ -182,4 +179,16 @@ class TaskViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    suspend fun startTask(taskID: Int) {
+        val changeStatusRequest = ChangeStatusRequest(0)
+        appRepository.changeTaskStatus(taskID, changeStatusRequest)
+    }
+
+    suspend fun pauseTask(taskID: Int) {
+        val changeStatusRequest = ChangeStatusRequest(1)
+        appRepository.changeTaskStatus(taskID, changeStatusRequest)
+    }
+
+    fun getUserID() = appRepository.getUserDetails().userId
 }

@@ -37,6 +37,7 @@ import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
 import com.dscvit.werk.util.PrefHelper
 import com.dscvit.werk.util.PrefHelper.set
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
@@ -74,6 +75,16 @@ class TaskDescriptionActivity : AppCompatActivity() {
         binding.descBody.text = task.description
 
         binding.descPoints.text = "Points: ${task.points}"
+
+        if (task.assigned != null) {
+            if (task.assignedTo == taskViewModel.getUserID()) {
+                binding.circularClock.visibility = View.VISIBLE
+            } else {
+                binding.circularClock.visibility = View.GONE
+            }
+        } else {
+            binding.circularClock.visibility = View.GONE
+        }
 
         binding.moreOptionsMenu.setOnClickListener {
             val popup = PopupMenu(this.baseContext, binding.moreOptionsMenu)
@@ -239,7 +250,9 @@ class TaskDescriptionActivity : AppCompatActivity() {
         binding.toggleButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.Main) {
                 binding.toggleButton.startAnimation()
-                delay(2000)
+                if (isTimerRunning) taskViewModel.pauseTask(task.taskId) else taskViewModel.startTask(
+                    task.taskId
+                )
                 binding.toggleButton.revertAnimation {
                     if (isTimerRunning) pauseTimer(task.taskId, task.title) else startTimer(
                         task.taskId,
@@ -251,7 +264,18 @@ class TaskDescriptionActivity : AppCompatActivity() {
         }
 
         binding.doneButton.setOnClickListener {
-            finishTask(task.taskId, task.title)
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Submit Task? 📈")
+                .setMessage("Once you submit the task, you won't be able to restart the task again.")
+                .setPositiveButton("Submit") { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                }
+                .setNegativeButton("Not done yet") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+//            finishTask(task.taskId, task.title)
         }
     }
 

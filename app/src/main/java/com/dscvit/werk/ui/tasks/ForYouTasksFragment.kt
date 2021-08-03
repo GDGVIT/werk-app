@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentForYouTasksBinding
 import com.dscvit.werk.ui.adapter.ForYouTasksAdapter
+import com.dscvit.werk.ui.session.SessionFragmentDirections
+import com.dscvit.werk.ui.utils.OnItemClickListener
+import com.dscvit.werk.ui.utils.addOnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -38,6 +42,17 @@ class ForYouTasksFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.recyclerView
+            .addOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClicked(position: Int, view: View) {
+                    val action =
+                        SessionFragmentDirections.actionSessionFragmentToTaskDescriptionActivity(
+                            adapter.getTask(position)
+                        )
+                    findNavController().navigate(action)
+                }
+            })
 
         lifecycleScope.launchWhenResumed {
             viewModel.tasks.collect { event ->

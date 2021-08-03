@@ -3,10 +3,7 @@ package com.dscvit.werk.ui.tasks
 import android.os.Build
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dscvit.werk.models.auth.UserDetails
 import com.dscvit.werk.models.sessions.CreateSessionRequest
 import com.dscvit.werk.models.sessions.CreateSessionResponse
@@ -38,22 +35,22 @@ class TaskViewModel @ViewModelInject constructor(
     private val _tasks = MutableStateFlow<GetTasksEvent>(GetTasksEvent.Initial)
     val tasks: StateFlow<GetTasksEvent> = _tasks
 
-    private val _allTasks = MutableStateFlow<MutableList<Task>>(mutableListOf())
-    val allTasks: LiveData<List<Task>> = _allTasks.asLiveData()
+    private val _allTasks = MutableLiveData<MutableList<Task>>(mutableListOf())
+    val allTasks: LiveData<MutableList<Task>> = _allTasks
 
-    private val _forYouTasks = MutableStateFlow<MutableList<Task>>(mutableListOf())
-    val forYouTasks: LiveData<List<Task>> = _forYouTasks.asLiveData()
+    private val _forYouTasks = MutableLiveData<MutableList<Task>>(mutableListOf())
+    val forYouTasks: LiveData<MutableList<Task>> = _forYouTasks
 
-    private val _completedTasks = MutableStateFlow<MutableList<Task>>(mutableListOf())
-    val completedTasks: LiveData<List<Task>> = _completedTasks.asLiveData()
+    private val _completedTasks = MutableLiveData<MutableList<Task>>(mutableListOf())
+    val completedTasks: LiveData<MutableList<Task>> = _completedTasks
 
     fun getTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             _tasks.value = GetTasksEvent.Loading
 
-            _allTasks.value.clear()
-            _forYouTasks.value.clear()
-            _completedTasks.value.clear()
+            _allTasks.value?.clear()
+            _forYouTasks.value?.clear()
+            _completedTasks.value?.clear()
 
             Log.d("BRR", sessionDetails.sessionId.toString())
 
@@ -66,18 +63,18 @@ class TaskViewModel @ViewModelInject constructor(
                     response.data?.tasks?.forEach {
                         // All Tasks
                         if (it.status != STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
-                            _allTasks.value.add(it)
+                            _allTasks.value?.add(it)
                         }
 
                         // Completed Tasks
                         if (it.status == STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
-                            _completedTasks.value.add(it)
+                            _completedTasks.value?.add(it)
                         }
 
                         // For You Tasks
                         if (it.status != STATUS_COMPLETED && it.status != STATUS_TERMINATED) {
                             if (it.assignedTo == userDetails.userId) {
-                                _forYouTasks.value.add(it)
+                                _forYouTasks.value?.add(it)
                             }
                         }
                     }
@@ -90,21 +87,21 @@ class TaskViewModel @ViewModelInject constructor(
 
     fun removeTask(taskID: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _allTasks.value.forEach {
+            _allTasks.value?.forEach {
                 if (it.taskId == taskID) {
-                    _allTasks.value.remove(it)
+                    _allTasks.value?.remove(it)
                 }
             }
 
-            _forYouTasks.value.forEach {
+            _forYouTasks.value?.forEach {
                 if (it.taskId == taskID) {
-                    _forYouTasks.value.remove(it)
+                    _forYouTasks.value?.remove(it)
                 }
             }
 
-            _completedTasks.value.forEach {
+            _completedTasks.value?.forEach {
                 if (it.taskId == taskID) {
-                    _completedTasks.value.remove(it)
+                    _completedTasks.value?.remove(it)
                 }
             }
         }
@@ -176,6 +173,31 @@ class TaskViewModel @ViewModelInject constructor(
                     GetTaskDetailsEvent.Failure(response.message ?: "", response.statusCode ?: -1)
                 is Resource.Success -> _taskDetails.value =
                     GetTaskDetailsEvent.Success(response.data!!)
+            }
+        }
+    }
+
+    sealed class SubmitTaskEvent {
+        object Success : SubmitTaskEvent()
+        data class Failure(val errorMessage: String, val statusCode: Int) : SubmitTaskEvent()
+        object Loading : SubmitTaskEvent()
+        object Initial : SubmitTaskEvent()
+    }
+
+    private val _submitTask = MutableStateFlow<SubmitTaskEvent>(SubmitTaskEvent.Initial)
+    val submitTask: StateFlow<SubmitTaskEvent> = _submitTask
+
+    fun submitTask(taskID: Int, duration: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _submitTask.value = SubmitTaskEvent.Loading
+
+            val submitRequest = SubmitRequest(duration)
+
+            when (val response = appRepository.submitTask(taskID, submitRequest)) {
+                is Resource.Error -> _submitTask.value =
+                    SubmitTaskEvent.Failure(response.message ?: "", response.statusCode ?: -1)
+                is Resource.Success -> _submitTask.value =
+                    SubmitTaskEvent.Success
             }
         }
     }

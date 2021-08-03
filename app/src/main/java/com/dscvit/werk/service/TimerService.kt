@@ -21,6 +21,7 @@ class TimerService : Service() {
         const val PAUSE = "Pause"
         const val DONE = "Done"
         const val GET_STATUS = "Get_Status"
+        const val SET_ELAPSED_TIME = "Set_Elapsed_Time"
     }
 
     private val timerMap = HashMap<Int, Int>()
@@ -39,22 +40,27 @@ class TimerService : Service() {
         val taskName = intent.getStringExtra("TaskName")!!
 
         taskNames[taskID] = taskName
+        val elapsedTime = intent.getIntExtra("TaskElapsedTime", -1)
 
         when (intent.getStringExtra("Action")!!) {
             START -> startTimer(taskID)
             PAUSE -> pauseTimer(taskID)
             DONE -> finishTask(taskID)
             GET_STATUS -> sendStatus(taskID)
+            SET_ELAPSED_TIME -> setElapsedTime(taskID, elapsedTime)
         }
 
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun startTimer(taskID: Int) {
-        if (!timers.containsKey(taskID)) {
-            timerMap[taskID] = 0
+    private fun setElapsedTime(taskID: Int, elapsedTime: Int) {
+        if (elapsedTime != -1) {
+            timerMap[taskID] = elapsedTime
+            sendStatus(taskID)
         }
+    }
 
+    private fun startTimer(taskID: Int) {
         isTimerRunning[taskID] = true
         sendStatus(taskID)
 
@@ -66,7 +72,7 @@ class TimerService : Service() {
 
                 timerMap[taskID] = timerMap[taskID]!!.plus(1)
 
-                showNotification(taskID)
+                showNotification(taskID, false)
 
                 timerIntent.putExtra("TimeElapsed", timerMap[taskID]!!)
                 sendBroadcast(timerIntent)
@@ -81,13 +87,18 @@ class TimerService : Service() {
         timers[taskID]!!.cancel()
         isTimerRunning[taskID] = false
         sendStatus(taskID)
-        showNotification(taskID)
+        showNotification(taskID, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun finishTask(taskID: Int) {
         Log.d("Timer", "Done called")
-        getSystemService(NotificationManager::class.java).cancel(taskID)
+        if (isTimerRunning[taskID] == true) {
+            timers[taskID]!!.cancel()
+            isTimerRunning[taskID] = false
+            sendStatus(taskID)
+        }
+        showNotification(taskID, true)
     }
 
     private fun sendStatus(taskID: Int) {
@@ -117,21 +128,45 @@ class TimerService : Service() {
             "${taskNames[taskID]} is paused!"
         }
 
+        val minutes: Int = timerMap[taskID]?.div(60) ?: 0
+        val seconds: Int = timerMap[taskID]?.rem(60) ?: 0
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setOngoing(true)
             .setContentTitle(title)
-            .setContentText("Time you have been working on it: ${timerMap[taskID]}")
+            .setContentText("Time you have been working on it: $minutes mins and $seconds secs")
             .setSmallIcon(R.drawable.logo)
             .build()
     }
 
-    private fun showNotification(taskID: Int) {
+    private fun getCompletedNotification(taskID: Int): Notification {
+        val title = "${taskNames[taskID]} is done 🎉"
+
+        val minutes: Int = timerMap[taskID]?.div(60) ?: 0
+        val seconds: Int = timerMap[taskID]?.rem(60) ?: 0
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setOngoing(true)
+            .setContentTitle(title)
+            .setContentText("Time you have been working on it: $minutes mins and $seconds secs")
+            .setSmallIcon(R.drawable.logo)
+            .build()
+    }
+
+    private fun showNotification(taskID: Int, isTaskSubmitted: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel()
-            getSystemService(NotificationManager::class.java)?.notify(
-                taskID,
-                getNotification(taskID)
-            )
+            if (!isTaskSubmitted) {
+                getSystemService(NotificationManager::class.java)?.notify(
+                    taskID,
+                    getNotification(taskID)
+                )
+            } else {
+                getSystemService(NotificationManager::class.java)?.notify(
+                    taskID,
+                    getCompletedNotification(taskID)
+                )
+            }
         }
     }
 }

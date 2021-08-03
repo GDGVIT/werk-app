@@ -76,7 +76,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
 
         binding.descPoints.text = "Points: ${task.points}"
 
-        if (task.assigned != null) {
+        if (task.assigned != null && task.status != "completed") {
             if (task.assignedTo == taskViewModel.getUserID()) {
                 binding.circularClock.visibility = View.VISIBLE
             } else {
@@ -229,7 +229,13 @@ class TaskDescriptionActivity : AppCompatActivity() {
                 when (event) {
                     is TaskViewModel.GetTaskDetailsEvent.Success -> {
                         loader.hide()
-                        binding.timerText.text = event.taskDetailsResponse.elapsedSecs.toString()
+                        if (!isTimerRunning) {
+                            setElapsedTime(
+                                task.taskId,
+                                task.title,
+                                event.taskDetailsResponse.elapsedSecs
+                            )
+                        }
                         Log.d(TAG, "SUCCESS")
                     }
                     is TaskViewModel.GetTaskDetailsEvent.Loading -> {
@@ -237,6 +243,29 @@ class TaskDescriptionActivity : AppCompatActivity() {
                         loader.show()
                     }
                     is TaskViewModel.GetTaskDetailsEvent.Failure -> {
+                        loader.hide()
+                        Log.d(TAG, event.errorMessage)
+                        view.showErrorSnackBar(event.errorMessage)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
+            taskViewModel.submitTask.collect { event ->
+                when (event) {
+                    is TaskViewModel.SubmitTaskEvent.Success -> {
+                        loader.hide()
+                        Log.d(TAG, "TASK SUBMITTED")
+                        finish()
+                    }
+                    is TaskViewModel.SubmitTaskEvent.Loading -> {
+                        Log.d(TAG, "LOADING...")
+                        loader.show()
+                    }
+                    is TaskViewModel.SubmitTaskEvent.Failure -> {
                         loader.hide()
                         Log.d(TAG, event.errorMessage)
                         view.showErrorSnackBar(event.errorMessage)
@@ -269,13 +298,13 @@ class TaskDescriptionActivity : AppCompatActivity() {
                 .setMessage("Once you submit the task, you won't be able to restart the task again.")
                 .setPositiveButton("Submit") { dialog, _ ->
                     dialog.dismiss()
-                    finish()
+                    finishTask(task.taskId, task.title)
+                    taskViewModel.submitTask(task.taskId, 5)
                 }
                 .setNegativeButton("Not done yet") { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
-//            finishTask(task.taskId, task.title)
         }
     }
 
@@ -294,7 +323,9 @@ class TaskDescriptionActivity : AppCompatActivity() {
                 binding.toggleButton.text = text
 
                 val timeElapsed = p1.getIntExtra("TaskTimeElapsed", 0)
-                binding.timerText.text = timeElapsed.toString()
+                val minutes: Int = timeElapsed / 60
+                val seconds: Int = timeElapsed % 60
+                binding.timerText.text = "${"%02d".format(minutes)} : ${"%02d".format(seconds)}"
             }
         }
         registerReceiver(statusReceiver, statusFiler)
@@ -305,7 +336,9 @@ class TaskDescriptionActivity : AppCompatActivity() {
         timerReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, p1: Intent?) {
                 val time = p1?.getIntExtra("TimeElapsed", 0)
-                binding.timerText.text = time.toString()
+                val minutes: Int = time?.div(60) ?: 0
+                val seconds: Int = time?.rem(60) ?: 0
+                binding.timerText.text = "${"%02d".format(minutes)} : ${"%02d".format(seconds)}"
             }
         }
         registerReceiver(timerReceiver, timerFilter)
@@ -339,6 +372,15 @@ class TaskDescriptionActivity : AppCompatActivity() {
         timerService.putExtra("TaskID", taskID)
         timerService.putExtra("TaskName", taskName)
         timerService.putExtra("Action", TimerService.DONE)
+        startService(timerService)
+    }
+
+    private fun setElapsedTime(taskID: Int, taskName: String, elapsedTime: Int) {
+        val timerService = Intent(this, TimerService::class.java)
+        timerService.putExtra("TaskID", taskID)
+        timerService.putExtra("TaskName", taskName)
+        timerService.putExtra("Action", TimerService.SET_ELAPSED_TIME)
+        timerService.putExtra("TaskElapsedTime", elapsedTime)
         startService(timerService)
     }
 

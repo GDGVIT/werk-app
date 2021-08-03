@@ -98,8 +98,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text=""
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                    android:text="60 : 20"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                     android:textColor="@color/red"
                     android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/hrs"
+                    android:text="@string/mins_secs"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     android:textColor="@color/red"
                     android:textStyle="bold" />

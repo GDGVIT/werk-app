@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dscvit.werk.databinding.FragmentCompletedTasksBinding
 import com.dscvit.werk.ui.adapter.CompletedTasksAdapter
+import com.dscvit.werk.ui.session.SessionFragmentDirections
+import com.dscvit.werk.ui.utils.OnItemClickListener
+import com.dscvit.werk.ui.utils.addOnItemClickListener
 import kotlinx.coroutines.flow.collect
 
 class CompletedTasksFragment : Fragment() {
@@ -36,6 +40,17 @@ class CompletedTasksFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.recyclerView
+            .addOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClicked(position: Int, view: View) {
+                    val action =
+                        SessionFragmentDirections.actionSessionFragmentToTaskDescriptionActivity(
+                            adapter.getTask(position)
+                        )
+                    findNavController().navigate(action)
+                }
+            })
 
         lifecycleScope.launchWhenResumed {
             viewModel.tasks.collect { event ->

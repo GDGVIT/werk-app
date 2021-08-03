@@ -19,6 +19,10 @@ class ForYouTasksAdapter : RecyclerView.Adapter<ForYouTasksAdapter.ViewHolder>()
         notifyDataSetChanged()
     }
 
+    fun getTask(pos: Int): Task {
+        return tasks[pos]
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.task_item, viewGroup, false)

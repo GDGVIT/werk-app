@@ -80,10 +80,10 @@ class SignInFragment : Fragment() {
         binding.signInButton.setOnClickListener {
             if (isEmailValid && isPasswordValid) {
                 viewModel.initSignInUser(
-                    binding.emailInput.editText?.text.toString(),
-                    binding.passwordInput.editText?.text.toString(),
+                    binding.emailInput.editText?.text.toString().trim(),
+                    binding.passwordInput.editText?.text.toString().trim(),
                 )
-                email = binding.emailInput.editText?.text.toString()
+                email = binding.emailInput.editText?.text.toString().trim()
             }
         }
 

@@ -86,9 +86,9 @@ class SignUpFragment : Fragment() {
         binding.signUpButton.setOnClickListener {
             if (isEmailValid && isNameValid && isPasswordValid) {
                 viewModel.initSignUpUser(
-                    binding.nameInput.editText?.text.toString(),
-                    binding.emailInput.editText?.text.toString(),
-                    binding.passwordInput.editText?.text.toString(),
+                    binding.nameInput.editText?.text.toString().trim(),
+                    binding.emailInput.editText?.text.toString().trim(),
+                    binding.passwordInput.editText?.text.toString().trim(),
                 )
             }
         }

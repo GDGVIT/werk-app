@@ -42,11 +42,11 @@ class CreateTaskActivity : AppCompatActivity() {
                 binding.taskPointsInput.editText!!.text.isNotEmpty()
             ) {
                 val createTaskRequest = CreateTaskRequest(
-                    binding.taskDescriptionInput.editText!!.text.toString(),
+                    binding.taskDescriptionInput.editText!!.text.toString().trim(),
                     binding.taskDurationInput.editText!!.text.toString().toInt(),
                     binding.taskPointsInput.editText!!.text.toString().toInt(),
                     0,
-                    binding.taskTitleInput.editText!!.text.toString()
+                    binding.taskTitleInput.editText!!.text.toString().trim()
                 )
 
                 viewModel.createATask(createTaskRequest)

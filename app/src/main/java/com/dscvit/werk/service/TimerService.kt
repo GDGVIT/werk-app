@@ -82,7 +82,6 @@ class TimerService : Service() {
         startForeground(taskID, getNotification(taskID))
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun pauseTimer(taskID: Int) {
         timers[taskID]!!.cancel()
         isTimerRunning[taskID] = false
@@ -90,7 +89,6 @@ class TimerService : Service() {
         showNotification(taskID, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun finishTask(taskID: Int) {
         Log.d("Timer", "Done called")
         if (isTimerRunning[taskID] == true) {
@@ -153,7 +151,7 @@ class TimerService : Service() {
         val seconds: Int = timerMap[taskID]?.rem(60) ?: 0
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setOngoing(true)
+            .setOngoing(false)
             .setContentTitle(title)
             .setContentText("Time you have been working on it: $minutes mins and $seconds secs")
             .setSmallIcon(R.drawable.logo)

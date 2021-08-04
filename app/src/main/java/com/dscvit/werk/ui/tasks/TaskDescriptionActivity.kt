@@ -140,7 +140,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
 
             viewModel.getParticipants()
 
-            lifecycleScope.launchWhenResumed {
+            lifecycleScope.launchWhenCreated {
                 viewModel.assignParticipant.collect { event ->
                     when (event) {
                         is ParticipantsViewModel.AssignParticipantEvent.Success -> {
@@ -153,6 +153,13 @@ class TaskDescriptionActivity : AppCompatActivity() {
                             binding.assignedName.text = event.participant.name
                             binding.assignedEmail.text = event.participant.email
                             binding.assignedPhoto.load(event.participant.avatar)
+
+                            if (event.participant.userId == taskViewModel.getUserID()) {
+                                binding.circularClock.visibility = View.VISIBLE
+                            } else {
+                                binding.circularClock.visibility = View.GONE
+                            }
+
                             loader.hide()
                         }
                         is ParticipantsViewModel.AssignParticipantEvent.Loading -> {
@@ -172,7 +179,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
                 }
             }
 
-            lifecycleScope.launchWhenResumed {
+            lifecycleScope.launchWhenCreated {
                 viewModel.participants.collect { event ->
                     when (event) {
                         is ParticipantsViewModel.GetParticipantsEvent.Success -> {
@@ -200,7 +207,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             taskViewModel.terminateTask.collect { event ->
                 when (event) {
                     is TaskViewModel.ChangeStatusEvent.Success -> {

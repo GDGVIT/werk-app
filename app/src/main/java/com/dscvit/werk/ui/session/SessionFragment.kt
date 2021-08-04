@@ -101,7 +101,12 @@ class SessionFragment : Fragment() {
                 view.showErrorSnackBar("Only the host can create tasks 😕")
             }
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
+
+        Log.d(TAG, "ON START CALLed")
         viewModel.getTasks()
     }
 }

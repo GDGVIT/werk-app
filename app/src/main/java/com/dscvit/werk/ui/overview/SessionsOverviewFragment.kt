@@ -36,8 +36,6 @@ class SessionsOverviewFragment : Fragment() {
     private var _binding: FragmentSessionsOverviewBinding? = null
     private val binding get() = _binding!!
 
-    private var openedOnce = false
-
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             requireContext(),
@@ -104,7 +102,7 @@ class SessionsOverviewFragment : Fragment() {
 
         val loader = requireContext().buildLoader()
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             viewModel.sessions.collect { event ->
                 when (event) {
                     is OverviewViewModel.GetSessionsEvent.Success -> {
@@ -136,11 +134,6 @@ class SessionsOverviewFragment : Fragment() {
 
         binding.sessionRefresh.setOnRefreshListener {
             viewModel.getSessions()
-        }
-
-        if (!openedOnce) {
-            viewModel.getSessions()
-            openedOnce = true
         }
 
         val userDetails = viewModel.userDetails
@@ -207,6 +200,11 @@ class SessionsOverviewFragment : Fragment() {
                 SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToCreateSessionFragment()
             findNavController().navigate(action)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getSessions()
     }
 
     private fun setVisibility(clicked: Boolean) {

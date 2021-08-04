@@ -79,8 +79,14 @@ class CreateSessionFragment : Fragment() {
 
             timePicker.show(childFragmentManager, timePicker.toString())
             timePicker.addOnPositiveButtonClickListener {
-                binding.startTimeInput.editText!!.setText("${timePicker.hour} : ${timePicker.minute}")
-                startDateTimeStr += " ${timePicker.hour}:${timePicker.minute}"
+                binding.startTimeInput.editText!!.setText(
+                    "${"%02d".format(timePicker.hour)}:${
+                        "%02d".format(
+                            timePicker.minute
+                        )
+                    }"
+                )
+                startDateTimeStr += " ${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
             }
         }
 
@@ -109,8 +115,14 @@ class CreateSessionFragment : Fragment() {
 
             timePicker.show(childFragmentManager, timePicker.toString())
             timePicker.addOnPositiveButtonClickListener {
-                binding.endTimeInput.editText!!.setText("${timePicker.hour} : ${timePicker.minute}")
-                endDateTimeStr += " ${timePicker.hour}:${timePicker.minute}"
+                binding.endTimeInput.editText!!.setText(
+                    "${"%02d".format(timePicker.hour)}:${
+                        "%02d".format(
+                            timePicker.minute
+                        )
+                    }"
+                )
+                endDateTimeStr += " ${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
             }
         }
 
@@ -140,9 +152,9 @@ class CreateSessionFragment : Fragment() {
 
                     val createSessionRequest =
                         CreateSessionRequest(
-                            binding.descriptionInput.editText!!.text.toString(),
+                            binding.descriptionInput.editText!!.text.toString().trim(),
                             endDateTime!!.time,
-                            binding.sessionNameInput.editText!!.text.toString(),
+                            binding.sessionNameInput.editText!!.text.toString().trim(),
                             emailList,
                             startDateTime!!.time,
                             binding.memberAssignTaskCheck.isChecked,

@@ -192,6 +192,7 @@ class CreateSessionFragment : Fragment() {
                             CreateSessionFragmentDirections.actionCreateSessionFragmentToInviteFragment(
                                 event.createSessionResponse.session.accessCode
                             )
+                        viewModel.resetCreateSession()
                         findNavController().navigate(action)
                         Log.d(TAG, "SESSION CREATED: ${event.createSessionResponse}")
                     }

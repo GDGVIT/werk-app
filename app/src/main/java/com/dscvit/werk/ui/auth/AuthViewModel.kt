@@ -84,6 +84,10 @@ class AuthViewModel @ViewModelInject constructor(
         }
     }
 
+    fun resetGoogleSignIn() {
+        _googleSignInUser.value = AuthEvent.Initial
+    }
+
     fun sendVerificationEmail(email: String) {
         val sendVerificationRequest = SendVerificationRequest(email)
         viewModelScope.launch(Dispatchers.IO) {

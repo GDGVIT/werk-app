@@ -98,6 +98,8 @@ class WelcomeFragment : Fragment() {
                         view.showSuccessSnackBar("Sign in successful! :)")
                         loader.hide()
 
+                        viewModel.resetGoogleSignIn()
+
                         findNavController().navigate(
                             R.id.action_welcomeFragment_to_sessionsOverviewFragment,
                             null,

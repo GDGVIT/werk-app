@@ -108,6 +108,10 @@ class OverviewViewModel @ViewModelInject constructor(
         }
     }
 
+    fun resetCreateSession() {
+        _createSession.value = CreateSessionEvent.Initial
+    }
+
     sealed class JoinSessionEvent {
         data class Success(val joinSessionResponse: JoinSessionResponse) : JoinSessionEvent()
         data class Failure(val errorMessage: String, val statusCode: Int) : JoinSessionEvent()
@@ -128,5 +132,9 @@ class OverviewViewModel @ViewModelInject constructor(
                     JoinSessionEvent.Success(response.data!!)
             }
         }
+    }
+
+    fun resetJoinSession() {
+        _joinSession.value = JoinSessionEvent.Initial
     }
 }

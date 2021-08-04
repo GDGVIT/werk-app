@@ -71,6 +71,7 @@ class JoinSessionFragment : Fragment() {
                     }
                     is OverviewViewModel.JoinSessionEvent.Success -> {
                         loader.hide()
+                        viewModel.resetJoinSession()
                         findNavController().popBackStack()
                         Log.d(TAG, "SESSION JOINED: ${event.joinSessionResponse}")
                     }

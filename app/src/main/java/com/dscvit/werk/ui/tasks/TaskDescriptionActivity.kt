@@ -154,13 +154,15 @@ class TaskDescriptionActivity : AppCompatActivity() {
                             binding.assignedEmail.text = event.participant.email
                             binding.assignedPhoto.load(event.participant.avatar)
 
-                            if (event.participant.userId == taskViewModel.getUserID()) {
-                                binding.circularClock.visibility = View.VISIBLE
-                            } else {
-                                binding.circularClock.visibility = View.GONE
-                            }
+//                            if (event.participant.userId == taskViewModel.getUserID()) {
+//                                binding.circularClock.visibility = View.VISIBLE
+//                            } else {
+//                                binding.circularClock.visibility = View.GONE
+//                            }
 
                             loader.hide()
+
+                            finish()
                         }
                         is ParticipantsViewModel.AssignParticipantEvent.Loading -> {
                             Log.d(TAG, "LOADING...")

@@ -33,8 +33,10 @@ class CreateSessionFragment : Fragment() {
 
     private val viewModel: OverviewViewModel by activityViewModels()
 
-    private var startDateTimeStr = ""
-    private var endDateTimeStr = ""
+    private var startDateStr = ""
+    private var startTimeStr = ""
+    private var endDateStr = ""
+    private var endTimeStr = ""
     private val emailList = mutableListOf<String>()
 
     override fun onCreateView(
@@ -60,12 +62,17 @@ class CreateSessionFragment : Fragment() {
             datePicker.show(childFragmentManager, dateBuilder.toString())
 
             datePicker.addOnPositiveButtonClickListener {
+                val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
+
                 Log.d(
                     "DatePickerActivity",
                     "Date String = ${datePicker.headerText}:: Date epoch value = $it"
                 )
+
+                Log.d("DatePickerActivity", dateFormat.format(it))
+
                 binding.startDateInput.editText!!.setText(datePicker.headerText)
-                startDateTimeStr += datePicker.headerText
+                startDateStr = dateFormat.format(it)
             }
         }
 
@@ -86,7 +93,8 @@ class CreateSessionFragment : Fragment() {
                         )
                     }"
                 )
-                startDateTimeStr += " ${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
+                startTimeStr =
+                    "${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
             }
         }
 
@@ -96,12 +104,17 @@ class CreateSessionFragment : Fragment() {
             datePicker.show(childFragmentManager, dateBuilder.toString())
 
             datePicker.addOnPositiveButtonClickListener {
+                val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
+
                 Log.d(
                     "DatePickerActivity",
                     "End Date String = ${datePicker.headerText}:: Date epoch value = $it"
                 )
+
+                Log.d("DatePickerActivity", dateFormat.format(it))
+
                 binding.endDateInput.editText!!.setText(datePicker.headerText)
-                endDateTimeStr += datePicker.headerText
+                endDateStr = dateFormat.format(it)
             }
         }
 
@@ -122,7 +135,7 @@ class CreateSessionFragment : Fragment() {
                         )
                     }"
                 )
-                endDateTimeStr += " ${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
+                endTimeStr = "${"%02d".format(timePicker.hour)}:${"%02d".format(timePicker.minute)}"
             }
         }
 
@@ -146,24 +159,32 @@ class CreateSessionFragment : Fragment() {
                         .isNotEmpty() && binding.descriptionInput.editText!!.text.toString()
                         .isNotEmpty() && emailList.isNotEmpty()
                 ) {
+                    val startDateTimeStr = "$startDateStr $startTimeStr"
+                    val endDateTimeStr = "$endDateStr $endTimeStr"
+
                     val formatter = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH)
                     val startDateTime = formatter.parse(startDateTimeStr)
                     val endDateTime = formatter.parse(endDateTimeStr)
 
-                    val createSessionRequest =
-                        CreateSessionRequest(
-                            binding.descriptionInput.editText!!.text.toString().trim(),
-                            endDateTime!!.time,
-                            binding.sessionNameInput.editText!!.text.toString().trim(),
-                            emailList,
-                            startDateTime!!.time,
-                            binding.memberAssignTaskCheck.isChecked,
-                            binding.memberCreateTaskCheck.isChecked,
-                        )
+                    if (startDateTime!!.time < endDateTime!!.time) {
 
-                    Log.d(TAG, "$createSessionRequest Current time: ${Date().time}")
+                        val createSessionRequest =
+                            CreateSessionRequest(
+                                binding.descriptionInput.editText!!.text.toString().trim(),
+                                endDateTime.time,
+                                binding.sessionNameInput.editText!!.text.toString().trim(),
+                                emailList,
+                                startDateTime.time,
+                                binding.memberAssignTaskCheck.isChecked,
+                                binding.memberCreateTaskCheck.isChecked,
+                            )
 
-                    viewModel.createASession(createSessionRequest)
+                        Log.d(TAG, "$createSessionRequest Current time: ${Date().time}")
+
+                        viewModel.createASession(createSessionRequest)
+                    } else {
+                        view.showErrorSnackBar("Bruh, end time is before it even starts.")
+                    }
                 } else {
                     view.showErrorSnackBar("All fields are required.")
                 }

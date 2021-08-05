@@ -1,5 +1,9 @@
 package com.dscvit.werk.ui.overview
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -17,12 +21,14 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.dscvit.werk.R
 import com.dscvit.werk.databinding.FragmentSessionsOverviewBinding
+import com.dscvit.werk.service.TimerService
 import com.dscvit.werk.ui.adapter.OverviewViewPagerAdapter
 import com.dscvit.werk.ui.utils.buildLoader
 import com.dscvit.werk.util.APP_PREF
 import com.dscvit.werk.util.PREF_TOKEN
 import com.dscvit.werk.util.PrefHelper
 import com.dscvit.werk.util.PrefHelper.set
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -35,6 +41,8 @@ class SessionsOverviewFragment : Fragment() {
 
     private var _binding: FragmentSessionsOverviewBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var statusReceiver: BroadcastReceiver
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -146,12 +154,11 @@ class SessionsOverviewFragment : Fragment() {
 
             popup.setOnMenuItemClickListener {
                 if (it.itemId == R.id.sign_out) {
-                    val sharedPrefs = PrefHelper.customPrefs(requireContext(), APP_PREF)
-                    sharedPrefs[PREF_TOKEN] = ""
-
-                    val action =
-                        SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToWelcomeFragment()
-                    findNavController().navigate(action)
+                    val timerService = Intent(requireActivity(), TimerService::class.java)
+                    timerService.putExtra("TaskID", -1)
+                    timerService.putExtra("TaskName", "")
+                    timerService.putExtra("Action", TimerService.GET_TIMERS_STATUS)
+                    requireActivity().startService(timerService)
 
                     return@setOnMenuItemClickListener true
                 } else {
@@ -205,6 +212,40 @@ class SessionsOverviewFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.getSessions()
+
+        // Receiving task status from service
+        val statusFiler = IntentFilter()
+        statusFiler.addAction("TimersStatus")
+        statusReceiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                val areTimersRunning = p1?.getBooleanExtra("AreTimersRunning", true)!!
+                if (areTimersRunning) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Tasks in progress")
+                        .setMessage("There are some tasks which are running, please pause them or complete them in order to sign out!")
+                        .setPositiveButton("Cool") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                } else {
+                    Log.d(TAG, "LOGOUT HERE")
+
+                    val sharedPrefs = PrefHelper.customPrefs(requireContext(), APP_PREF)
+                    sharedPrefs[PREF_TOKEN] = ""
+
+                    val action =
+                        SessionsOverviewFragmentDirections.actionSessionsOverviewFragmentToWelcomeFragment()
+                    findNavController().navigate(action)
+                }
+            }
+        }
+        requireActivity().registerReceiver(statusReceiver, statusFiler)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        requireActivity().unregisterReceiver(statusReceiver)
     }
 
     private fun setVisibility(clicked: Boolean) {

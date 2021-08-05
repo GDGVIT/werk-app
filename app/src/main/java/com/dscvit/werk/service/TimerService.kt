@@ -22,6 +22,7 @@ class TimerService : Service() {
         const val DONE = "Done"
         const val GET_STATUS = "Get_Status"
         const val SET_ELAPSED_TIME = "Set_Elapsed_Time"
+        const val GET_TIMERS_STATUS = "Get_Timers_Status"
     }
 
     private val timerMap = HashMap<Int, Int>()
@@ -48,6 +49,7 @@ class TimerService : Service() {
             DONE -> finishTask(taskID)
             GET_STATUS -> sendStatus(taskID)
             SET_ELAPSED_TIME -> setElapsedTime(taskID, elapsedTime)
+            GET_TIMERS_STATUS -> sendTimersStatus()
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -111,6 +113,22 @@ class TimerService : Service() {
         statusIntent.action = "TaskStatus$taskID"
         statusIntent.putExtra("TaskStatus", isTimerRunning[taskID] ?: false)
         statusIntent.putExtra("TaskTimeElapsed", timerMap[taskID] ?: 0)
+        sendBroadcast(statusIntent)
+    }
+
+    private fun sendTimersStatus() {
+        val statusIntent = Intent()
+        statusIntent.action = "TimersStatus"
+
+        var areAllTimersDone = true
+        for ((_, v) in isTimerRunning) {
+            if (v) {
+                areAllTimersDone = false
+                break
+            }
+        }
+
+        statusIntent.putExtra("AreTimersRunning", !areAllTimersDone)
         sendBroadcast(statusIntent)
     }
 

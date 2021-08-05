@@ -108,10 +108,12 @@ class TaskDescriptionActivity : AppCompatActivity() {
             binding.assignedPhoto.load(task.assigned?.avatar)
             binding.assignedName.text = task.assigned?.name
             binding.assignedEmail.text = task.assigned?.email
+            binding.changeAssignedButton.visibility = View.GONE
         } else {
             binding.assignedPhoto.visibility = View.GONE
             binding.assignedName.visibility = View.GONE
             binding.assignedEmail.visibility = View.GONE
+            binding.changeAssignedButton.visibility = View.VISIBLE
         }
 
         binding.backButton.setOnClickListener {
@@ -153,12 +155,6 @@ class TaskDescriptionActivity : AppCompatActivity() {
                             binding.assignedName.text = event.participant.name
                             binding.assignedEmail.text = event.participant.email
                             binding.assignedPhoto.load(event.participant.avatar)
-
-//                            if (event.participant.userId == taskViewModel.getUserID()) {
-//                                binding.circularClock.visibility = View.VISIBLE
-//                            } else {
-//                                binding.circularClock.visibility = View.GONE
-//                            }
 
                             loader.hide()
 

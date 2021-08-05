@@ -63,18 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/task_desc_text" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/clock_anim"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_colorFilter="@color/red"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/clock" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

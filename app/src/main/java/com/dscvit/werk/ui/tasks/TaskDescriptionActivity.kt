@@ -87,7 +87,7 @@ class TaskDescriptionActivity : AppCompatActivity() {
         }
 
         binding.moreOptionsMenu.setOnClickListener {
-            val popup = PopupMenu(this.baseContext, binding.moreOptionsMenu)
+            val popup = PopupMenu(this, binding.moreOptionsMenu)
             popup.menuInflater.inflate(R.menu.more_actions_task_menu, popup.menu)
 
             popup.setOnMenuItemClickListener {

@@ -37,4 +37,8 @@
             @anim/fragment_close_exit
         </item>
     </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/dark_gray</item>
+    </style>
 </resources>

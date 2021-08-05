@@ -156,6 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/participant_emails"
+                app:endIconDrawable="@drawable/ic_done"
+                app:endIconMode="custom"
                 app:startIconDrawable="@drawable/ic_email_solid">
 
                 <com.google.android.material.textfield.TextInputEditText

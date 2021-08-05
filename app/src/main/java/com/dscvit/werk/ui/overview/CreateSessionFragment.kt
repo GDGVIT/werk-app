@@ -149,6 +149,13 @@ class CreateSessionFragment : Fragment() {
             false
         }
 
+        binding.emailInput.setEndIconOnClickListener {
+            val textView = binding.emailInput.editText!!
+            val email = textView.text.toString()
+            textView.text = null
+            addEmailChipToGroup(email)
+        }
+
         binding.nextButton.setOnClickListener {
             try {
                 if (binding.sessionNameInput.editText!!.text.toString()

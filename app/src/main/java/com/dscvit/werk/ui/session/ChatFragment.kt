@@ -77,6 +77,11 @@ class ChatFragment : Fragment() {
                     sentTime = 0
                 )
 
+                if (binding.chatRecyclerView.visibility == View.GONE && binding.emptyText.visibility == View.VISIBLE) {
+                    binding.chatRecyclerView.visibility = View.VISIBLE
+                    binding.emptyText.visibility = View.GONE
+                }
+
                 adapter.appendMessage(message)
                 binding.chatRecyclerView.scrollToPosition(adapter.messageList.size - 1)
 

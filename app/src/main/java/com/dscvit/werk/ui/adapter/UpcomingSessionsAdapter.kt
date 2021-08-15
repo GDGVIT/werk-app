@@ -68,12 +68,12 @@ class UpcomingSessionsAdapter : RecyclerView.Adapter<UpcomingSessionsAdapter.Vie
                 }
             } else {
                 additionalUsers.visibility = View.VISIBLE
-                additionalUsers.text = "${session.participantsCount - 3}"
+                additionalUsers.text = "+${session.participantsCount - 3}"
                 for (i in 0..2) {
                     userImgList[i].visibility = View.VISIBLE
-                    userImgList[i - 1].load(session.participants[i - 1].avatar)
+                    userImgList[i].load(session.participants[i].avatar)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        userImgList[i - 1].tooltipText = session.participants[i - 1].name
+                        userImgList[i].tooltipText = session.participants[i].name
                     }
                 }
             }

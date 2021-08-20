@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/session_nav_graph"
+    app:startDestination="@id/sessionFragment">
+
+    <fragment
+        android:id="@+id/sessionFragment"
+        android:name="com.dscvit.werk.ui.session.SessionFragment"
+        android:label="Session"
+        tools:layout="@layout/fragment_session">
+        <action
+            android:id="@+id/action_sessionFragment_to_taskDescriptionActivity"
+            app:destination="@id/taskDescriptionActivity" />
+        <action
+            android:id="@+id/action_sessionFragment_to_createTaskActivity"
+            app:destination="@id/createTaskActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.dscvit.werk.ui.session.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.dscvit.werk.ui.session.LeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
+    <activity
+        android:id="@+id/taskDescriptionActivity"
+        android:name="com.dscvit.werk.ui.tasks.TaskDescriptionActivity"
+        android:label="activity_task_description"
+        tools:layout="@layout/activity_task_description">
+
+        <argument
+            android:name="task"
+            app:argType="com.dscvit.werk.models.task.Task" />
+    </activity>
+    <activity
+        android:id="@+id/createTaskActivity"
+        android:name="com.dscvit.werk.ui.tasks.CreateTaskActivity"
+        android:label="activity_create_task"
+        tools:layout="@layout/activity_create_task" />
+</navigation>
